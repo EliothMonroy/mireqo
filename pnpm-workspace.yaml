@@ -1,0 +1,6 @@
+packages:
+  - .
+
+# Explicitly approved dependency build hooks.
+allowBuilds:
+  unrs-resolver: true

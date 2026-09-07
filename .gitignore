@@ -1,0 +1,14 @@
+node_modules/
+.pnpm-store/
+.expo/
+android/
+ios/
+dist/
+coverage/
+.env*
+!.env.example
+.DS_Store
+.worktrees/
+.bundle/
+vendor/bundle/
+*.log

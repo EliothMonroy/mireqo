@@ -1,0 +1,21 @@
+node_modules
+.pnpm-store
+.expo
+android
+ios
+coverage
+dist
+.worktrees
+vendor
+.bundle
+pnpm-lock.yaml
+Gemfile.lock
+# Existing guidance stays outside foundation formatting scope.
+spec
+AGENTS.md
+implement_new_feature.md
+planner.md
+implementer.md
+tester.md
+reviewer.md
+architecture.md
