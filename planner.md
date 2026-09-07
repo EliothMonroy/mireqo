@@ -17,6 +17,19 @@ Follow [AGENTS.md](AGENTS.md), the workflow in [implement_new_feature.md](implem
 - Describe verification expectations for the implementer and tester without declaring the feature successful.
 - Leave routine coding details to the implementer. Avoid speculative abstractions, exhaustive pseudocode, and arbitrary task fragmentation.
 
+## Planning mobile, API, and backend changes
+
+For every feature, assess the complete path from the mobile behavior through shared API contracts, backend catalog queries, database storage, and imports. Record which areas need changes and which are unaffected; do not assume backend work is a separate future task.
+
+- Include needed API endpoints or modifications, request/response validation, errors, pagination/filter semantics, and OpenAPI changes in the plan.
+- Identify affected mobile consumers and compatibility with existing clients. Plan contract changes and their implementation order together.
+- Include required Kysely queries, migrations, schema-type updates, source adapters, and worker behavior. Identify data preservation, identity, freshness, and retry/concurrency implications where relevant.
+- Define observable acceptance criteria and proportionate verification for backend behavior, actual PostgreSQL/PostGIS queries, migrations, and mobile/API integration as well as UI behavior.
+- Identify required local services, fixtures, credentials, and any live-provider checks. Clarify missing provider capabilities or requirements with the user rather than inventing them.
+- Make dependencies and ownership explicit when API/backend and mobile tasks can run independently. Shared-contract ownership and integration points must be clear before delegation.
+
+The plan must cover the complete approved feature. Backend assessment does not authorize unrelated endpoints, providers, infrastructure, or product behavior.
+
 ## Required Markdown records
 
 Always write and maintain these files under `plans/<feature-name>/`:

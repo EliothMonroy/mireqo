@@ -1,6 +1,6 @@
 # Mireqo architecture
 
-This document records the agreed architecture for Mireqo's Android and iOS MVP. The minimal Expo application foundation is implemented; product features and data layers below remain intended architecture.
+This document records the agreed architecture for Mireqo's Android and iOS MVP. The Expo application, pnpm workspace, backend API/worker foundation, and shared health/error contracts are implemented. Catalog ingestion, product features, and associated data layers remain pending.
 
 Product scope and behavior remain defined by the [high-level specification](spec/high-level-spec.md), [feature specification](spec/feature-spec.md), and [UI specification](spec/ui-spec.md). Repository guidance is defined in [AGENTS.md](AGENTS.md); the code-change workflow is defined in [implement_new_feature.md](implement_new_feature.md). Development environment setup, dependency installation, native build configuration, and build/check commands are defined in [build.md](build.md), which distinguishes the agreed workflow from pending implementation.
 
@@ -15,12 +15,36 @@ Product scope and behavior remain defined by the [high-level specification](spec
 | Remote data | TanStack Query |
 | Local persistence | Expo SQLite |
 | Temporary UI state | React state, scoped to the relevant browsing context |
+| Repository organization | pnpm workspace with mobile, backend, and shared API contracts |
+| Backend | TypeScript, Fastify API, and a background import worker |
+| Catalog database | PostgreSQL with PostGIS |
+| Database access | Kysely, with explicit SQL where needed for PostGIS |
+| Mobile-facing API | REST under `/v1`, documented through OpenAPI |
+| Event ingestion | Scheduled batches from multiple sources |
 
-Use one application organized by feature, with explicit boundaries between presentation, shared product rules, and data access. No additional global state library is selected. Introduce abstractions for demonstrated needs; simple operations may remain functions rather than requiring classes or a layer for every action.
+Organize the mobile application by feature, with explicit boundaries between presentation, shared product rules, and data access. No additional global state library is selected. Introduce abstractions for demonstrated needs; simple operations may remain functions rather than requiring classes or a layer for every action.
 
-The event provider, backend, visual design, and styling library remain open decisions.
+Specific event sources, launch coverage, production hosting, visual design, and styling library remain open decisions.
 
-## Module organization
+## Workspace organization
+
+The agreed target structure is:
+
+```text
+apps/
+  mobile/              # Expo application
+  backend/             # Fastify API and import worker, sharing backend modules
+packages/
+  contracts/           # API schemas and inferred TypeScript types
+```
+
+The Expo application lives in apps/mobile. The API and worker are separate processes within one backend application. Do not introduce separate services or additional shared packages without a demonstrated need.
+
+Share API contracts across mobile and backend, not database models or provider integrations. Contracts must be usable without importing backend runtime code or mobile dependencies. Each application keeps its internal domain and data-access modules private; extract other shared logic only when justified.
+
+## Mobile module organization
+
+Apply the mobile layout below as features are implemented. Existing mobile source lives in `apps/mobile/src/`.
 
 ```text
 src/
@@ -74,14 +98,14 @@ Restoring the full browsing session after a process restart is outside the MVP. 
 
 ### Event catalog
 
-The catalog exposes operations for discovery collections, search and filtered listings, pagination, and event details. Its callers work with Mireqo models, regardless of the eventual event provider.
+The catalog exposes operations for discovery collections, search and filtered listings, pagination, and event details. Its callers work with Mireqo models returned by the backend catalog API, independent of external source formats.
 
 ```text
 Search screen
   → search hook
     → TanStack Query
       → event catalog operation
-        → provider adapter / event API
+        → Mireqo REST API → backend catalog query
 ```
 
 - Validate incoming data at runtime; TypeScript types alone do not validate API responses.
@@ -93,7 +117,7 @@ Search screen
 - Keep successful discovery sections visible when another section fails. Refresh and pagination failures should preserve usable results with appropriate recovery actions.
 - Configure app lifecycle and network connectivity integration centrally for TanStack Query. Connectivity signals do not replace handling actual request failures.
 
-Provider and backend selection are deferred. If private provider credentials are required, requests must go through a server that holds them; private credentials must not be embedded in the mobile application.
+External provider integrations and private credentials belong on the backend. The mobile application queries the Mireqo API rather than individual providers. Saved membership and preferences remain local; this backend decision does not add accounts or synchronization.
 
 ### Local user data
 
@@ -121,6 +145,60 @@ Remote refreshes may update event information, but never own saved membership. R
 - If a provider removes an event, retain the saved entry and explain that current details are unavailable. Do not equate an unavailable response with cancellation.
 - Retain the snapshot's last successful refresh timestamp. Communicate stale/offline information appropriately.
 - Offline Saved must remain usable if remote images cannot load; use the shared image fallback. Downloading an entire city's catalog is outside the MVP.
+
+## Backend catalog and imports
+
+```text
+External event sources
+  → source adapters
+  → validation and normalization
+  → conservative duplicate matching
+  → PostgreSQL/PostGIS catalog
+  → Fastify REST API
+  → mobile catalog operations
+```
+
+### Responsibilities and boundaries
+
+- Source adapters handle provider-specific fetching and mapping into the shared backend event model. Preserve provider references and field provenance; validate external data at runtime.
+- Import processing owns normalization, matching, and repeatable updates. Keep it separate from HTTP route handling.
+- Catalog modules own event identity and selection rules. Database-access modules expose focused operations, such as searching events or upserting a source record.
+- The API queries the stored catalog for discovery, search, event details, categories, and city lookup. Exact endpoint paths beyond `/v1`, city data sourcing, schemas, and ranking rules remain to be defined.
+- Keep Kysely queries and explicit SQL inside backend data-access modules. Parameterize values and allowlist dynamic identifiers and ordering options. Group related writes into transactions.
+- Versioned migrations define the database schema. Keep Kysely schema types aligned with migrations; type checking is not a substitute for testing actual PostgreSQL/PostGIS queries.
+
+### Scheduled imports
+
+Start with scheduled batches, without a dedicated queue service. Each source has an adapter and refresh schedule. Record import progress and failures in PostgreSQL. Repeated imports must safely update existing records rather than duplicate them; enforce at most one active import per source across worker instances. Failures and retries are independent per source.
+
+The foundation uses session advisory locks on dedicated database connections and reconciles abandoned running records as interrupted after ownership is recovered. Provider-specific retry policies, batch sizes, schedules, stale-data thresholds, and any additional production recovery requirements must be settled in implementation planning against actual provider limits. Continue serving the stored catalog during source outages. Local fixtures support development without live provider access; they do not establish live-provider compatibility.
+
+### Identity and duplicate matching
+
+- Assign stable Mireqo IDs to catalog events. Retain each provider's event ID and source record separately, linked to the catalog event.
+- Automatically merge only when strong evidence identifies the same event. Title alone is insufficient. Keep uncertain matches separate initially.
+- Separate performances remain separate events even if their titles and venues match. Exact handling of multi-session source records remains open.
+- Preserve field provenance. Define precise matching rules after examining selected providers' data.
+- Verify permitted storage, reuse, and imagery handling for each source before integrating it.
+
+### Conflicts and freshness
+
+- Define source priority explicitly, with field-specific rules when needed. Fetch recency alone does not establish accuracy.
+- Record each source record's last successful fetch and provider update timestamp when available.
+- Preserve existing values when an import omits a field, unless the source explicitly indicates removal. The source adapter must distinguish omission from explicit removal according to provider semantics.
+- Cancellation and postponement require explicit status evidence. Missing records and failed requests do not establish either status.
+- Serve last-known catalog information during outages. Define refresh intervals and stale-data behavior per source after assessing capabilities and usage limits.
+
+## API contracts
+
+Use REST under `/v1`, with an OpenAPI specification. Shared request and response schemas in `packages/contracts` are the source for runtime validation, inferred TypeScript types, and API documentation. TypeBox supplies the shared runtime schemas and inferred types, the Fastify TypeBox provider connects route types to those schemas, and @fastify/swagger generates OpenAPI from the registered route schemas.
+
+- Validate incoming requests on the backend and responses at the mobile data boundary.
+- Expose stable Mireqo IDs and the public event model; keep provider records and database details internal.
+- Use cursor-based pagination with deterministic ordering. Define cursor behavior and ordering for each listing contract.
+- Use a consistent error format with a machine-readable code and readable message.
+- Apply complete search and filter semantics on the backend, before pagination; mobile filtering of a downloaded page is not a complete result set.
+- Plan API changes together with affected mobile consumers, validation, OpenAPI output, and compatibility implications. Do not assume all installed clients update at the same time.
 
 ## Shared event model
 
@@ -183,6 +261,8 @@ Follow the proportionate verification policy in [implement_new_feature.md](imple
 
 - Domain rules: time-zone boundaries, incomplete schedules, price states, and event status.
 - Catalog adapters: runtime validation, stable identity, missing fields, query/filter semantics, and pagination.
+- Backend: API validation/error contracts, combined filters and pagination, PostgreSQL/PostGIS queries, schema migrations, and mobile/API integration.
+- Imports: normalization, repeatable updates, duplicate matching, conflict selection, source failures/retries, freshness, and prevention of overlapping imports.
 - Local persistence: migrations, transactional saves, restart hydration, and failure handling without lost user intent.
 - Feature integration: shared saved state, stale search responses, partial failures, and offline snapshots.
 - Navigation and UI: tab/back continuity, direct event entry, filter drafts, appearance, accessibility, and relevant Android/iOS behavior.
@@ -191,7 +271,10 @@ Test tooling, installation workflow, pinned toolchain, and executable commands a
 
 ## Open decisions
 
-- Event provider, city lookup source, backend requirements, and provider capabilities.
+- Event sources, launch coverage, city lookup source, provider capabilities, and permitted data reuse.
+- Production hosting and deployment; API operational limits and abuse controls.
+- Further catalog contracts/schema and provider-specific dependencies. Foundation uses pg, TypeBox/Fastify Swagger, Kysely Migrator, and manually synchronized schema interfaces verified by integration tests.
+- Source-specific matching/priority rules, schedules, stale-data thresholds, retry policies, and additional production recovery requirements beyond the implemented dedicated-session locks and interrupted-run reconciliation.
 - Concrete API/schema details and remaining date/session semantics identified above.
 - Visual design and styling library.
 - Public event-link domain and hosting, if used.
@@ -206,3 +289,9 @@ Optional product features remain optional under the specs. These open decisions 
 - [Expo SQLite](https://docs.expo.dev/versions/latest/sdk/sqlite/).
 
 Consult documentation compatible with the versions eventually pinned in the repository.
+
+## Implemented backend foundation
+
+Fastify factory is separate from process startup. Health, readiness, and OpenAPI are the only public endpoints. Shared TypeBox schemas provide runtime validation and TypeScript types; mobile data-boundary tests consume them without coupling the launch screen to a server.
+
+Kysely data access stays in backend modules. Versioned migrations create PostGIS and operational import/fixture tables; no event catalog schema is implied. The separate worker has no live adapters by default. Explicit fixture jobs demonstrate transaction rollback, persisted run outcomes, session advisory locking on a dedicated connection, and recovery of abandoned running records after process loss. Hash collisions may conservatively serialize unrelated sources; they cannot permit overlapping imports. Production schedules, provider policies, matching and freshness remain deferred.

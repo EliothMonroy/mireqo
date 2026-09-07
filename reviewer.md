@@ -12,6 +12,7 @@ Never request, receive as handoff input, or read `blockers.md` or blocker histor
 
 - Inspect the actual implementation, including uncommitted and untracked feature files. Do not rely solely on task status, summaries, or passing tests.
 - Assess product correctness, fulfillment of the documented goal, architecture compliance, maintainability, scope discipline, and verification quality.
+- Assess affected mobile, shared API contracts, backend API, database/migrations, and import-worker behavior as one delivered feature. Confirm required backend and integration evidence is present; a mobile-only demonstration does not establish backend correctness.
 - Confirm that each acceptance criterion has adequate evidence. Run additional checks when necessary without delegating them.
 - Separate concrete issues that prevent success from optional suggestions. Each finding identifies the requirement or code, its impact, and what must be resolved.
 - Write findings and the final feature verdict in `plans/<feature-name>/review.md` with supporting evidence.

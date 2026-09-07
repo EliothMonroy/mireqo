@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { inspectHost, nativeEnvironment } from './doctor.mjs';
+import { inspectHost, nativeEnvironment, repositoryRoot } from './doctor.mjs';
 
 const host = {
   run: (cmd) =>
@@ -31,7 +31,7 @@ test('missing native tools do not make JavaScript readiness fail', () => {
     ...host,
     run: (cmd) => (cmd === 'pnpm' ? '12.3.4' : ''),
     platform: 'linux',
-    exists: (p) => p.startsWith('node_modules'),
+    exists: (p) => p.startsWith('apps/mobile/node_modules'),
   });
   assert.ok(groups.javascript.every((c) => c.ok));
   assert.ok(groups.android.some((c) => !c.ok));
@@ -55,6 +55,13 @@ test('detects mismatched Node, pnpm and Xcode versions', () => {
 test('honors configured Android SDK without overwriting unrelated environment', () => {
   assert.deepEqual(
     nativeEnvironment({ ANDROID_SDK_ROOT: '/custom', OTHER: 'keep' }, '/home'),
-    { ANDROID_HOME: '/custom', ANDROID_SDK_ROOT: '/custom', OTHER: 'keep' },
+    {
+      ANDROID_HOME: '/custom',
+      ANDROID_SDK_ROOT: '/custom',
+      OTHER: 'keep',
+      BUNDLE_GEMFILE: `${repositoryRoot}Gemfile`,
+      BUNDLE_PATH: `${repositoryRoot}vendor/bundle`,
+      BUNDLE_APP_CONFIG: `${repositoryRoot}.bundle`,
+    },
   );
 });

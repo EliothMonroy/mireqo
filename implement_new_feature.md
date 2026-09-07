@@ -17,6 +17,8 @@ Planning-only requests stop at planning. A request to discuss or edit guidance d
 | [Tester](tester.md) | Independently verify the current implementation; never fix application code | Passing verification → reviewer; defects → implementer; blocked/unclear → planner |
 | [Reviewer](reviewer.md) | Independently assess feature success, then perform delivery and safe cleanup | Changes required → implementer then tester; successful → commit and PR |
 
+These responsibilities cover the complete approved feature across mobile, shared API contracts, backend API, database, and import worker. The planner includes necessary API/backend changes and their verification in the plan; the implementer delivers them; the tester independently verifies them; the reviewer assesses the complete result. Each persona defines its detailed responsibilities.
+
 Read the assigned persona before acting. The coordinating agent manages stage transitions and documented handoffs without taking over another persona's authority. Tester and reviewer work must remain independent of the implementation. Do not silently collapse those stages into implementer self-approval if runtime capacity or tooling is unavailable; record the limitation and route it through planning.
 
 ## Durable feature records
