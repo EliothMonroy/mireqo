@@ -43,6 +43,8 @@ Routine tooling proposals are ESLint with Expo-compatible configuration and impo
 
 ## Verification and handoff
 
+The required foundation text-size sample is Android system `font_scale=2.0` and iOS Dynamic Type `accessibility-medium`, alongside the default settings. Record the exact device/OS and actual setting; iOS category names are not a universal numeric font multiplier. Verify readable, reachable content without clipped text or disabled scaling. Use scrolling when content exceeds the viewport. This sampling makes criterion 7 concrete; it is not a claim that every supported text-size category has been tested. Record maximum Dynamic Type scrolling as unverified if it has not been demonstrated. Any confirmed inaccessible content at a larger size remains an implementation defect and cannot be dismissed merely because the required sample passes.
+
 The implementer records exact commands/results in `implementation.md` and updates [tasks](tasks.md). Missing required native verification routes back to planning; it is not a passing handoff. The independent tester validates the current uncommitted worktree and writes `testing.md`. Only passing required verification proceeds to the reviewer, with a self-contained handoff that excludes blocker content/history. The reviewer alone determines feature success and performs the authorized commit/PR workflow.
 
 Native setup availability and tool-install access are risks to inspect early. Version research, diagnostic design, and planning can proceed while Git isolation is unresolved. Required Android/iOS evidence is not waived for an unavailable host.

@@ -4,7 +4,7 @@ This record belongs to planning, implementation, and testing. Never include it o
 
 ## B01 — No committed Git base for required worktree
 
-- Status: user authorization received on 2026-09-06; awaiting coordinator baseline creation.
+- Status: resolved: coordinator created authorized baseline `e48d952`; implementer created dedicated worktree.
 - Affected tasks: F01 and downstream code implementation F03–F05.
 - Requirement: implement on a separate branch/worktree; do not modify `main` and do not make an unauthorized bootstrap commit.
 - Evidence: `git status --short --branch` reports `No commits yet on main`; guidance/specification files are untracked. Coordinator inspection reports no remotes.
@@ -15,7 +15,7 @@ This record belongs to planning, implementation, and testing. Never include it o
 
 ## B02 — No remote destination for eventual delivery
 
-- Status: deferred delivery prerequisite; local planning can proceed.
+- Status: resolved destination: user supplied `https://github.com/EliothMonroy/mireqo.git`, configured as origin by coordinator. Remote is empty; reviewer must publish authorized baseline before PR.
 - Affected task: F08 push/PR only.
 - Evidence: coordinator inspection reports no configured Git remote.
 - Attempts: no remote was invented or created.

@@ -1,6 +1,6 @@
 # Mireqo architecture
 
-This document records the agreed architecture for Mireqo's Android and iOS MVP. It describes the intended implementation; the application has not been built yet.
+This document records the agreed architecture for Mireqo's Android and iOS MVP. The minimal Expo application foundation is implemented; product features and data layers below remain intended architecture.
 
 Product scope and behavior remain defined by the [high-level specification](spec/high-level-spec.md), [feature specification](spec/feature-spec.md), and [UI specification](spec/ui-spec.md). Repository guidance is defined in [AGENTS.md](AGENTS.md); the code-change workflow is defined in [implement_new_feature.md](implement_new_feature.md). Development environment setup, dependency installation, native build configuration, and build/check commands are defined in [build.md](build.md), which distinguishes the agreed workflow from pending implementation.
 
@@ -187,7 +187,7 @@ Follow the proportionate verification policy in [implement_new_feature.md](imple
 - Feature integration: shared saved state, stale search responses, partial failures, and offline snapshots.
 - Navigation and UI: tab/back continuity, direct event entry, filter drafts, appearance, accessibility, and relevant Android/iOS behavior.
 
-Test tooling requirements, installation workflow, and planned commands are defined in [build.md](build.md). Concrete tool selections and executable scripts remain pending.
+Test tooling, installation workflow, pinned toolchain, and executable commands are defined in [build.md](build.md).
 
 ## Open decisions
 
@@ -195,7 +195,7 @@ Test tooling requirements, installation workflow, and planned commands are defin
 - Concrete API/schema details and remaining date/session semantics identified above.
 - Visual design and styling library.
 - Public event-link domain and hosting, if used.
-- Exact toolchain versions, environment bootstrap details, and test/build tool selections, tracked in [build.md](build.md).
+- Release distribution and physical-device signing workflow, tracked separately from the local foundation in [build.md](build.md).
 
 Optional product features remain optional under the specs. These open decisions do not authorize adding authentication, synchronization, notifications, or other deferred functionality.
 
