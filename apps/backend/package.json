@@ -1,0 +1,32 @@
+{
+  "name": "@mireqo/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src test",
+    "api": "node --env-file-if-exists=../../.env src/server.ts",
+    "worker": "node --env-file-if-exists=../../.env src/worker/main.ts",
+    "db:migrate": "node --env-file-if-exists=../../.env src/db/cli.ts migrate",
+    "db:seed": "node --env-file-if-exists=../../.env src/db/cli.ts seed",
+    "test": "node --test test/unit.test.ts",
+    "test:integration": "node --env-file-if-exists=../../.env --test test/integration.test.ts"
+  },
+  "dependencies": {
+    "@mireqo/contracts": "workspace:*",
+    "@fastify/swagger": "9.8.1",
+    "@fastify/type-provider-typebox": "5.2.0",
+    "fastify": "5.12.3",
+    "kysely": "0.29.5",
+    "pg": "8.23.0"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "@types/node": "24.10.1",
+    "@types/pg": "8.23.1",
+    "@typescript-eslint/parser": "8.69.0",
+    "@sinclair/typebox": "0.33.24"
+  }
+}

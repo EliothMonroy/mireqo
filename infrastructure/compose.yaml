@@ -1,0 +1,33 @@
+name: mireqo
+services:
+  db:
+    image: postgis/postgis:17-3.5@sha256:01a6a70e41e6c4467c8f55f6063555ed72db2d6662cd0d571040d42eadaeb6f6
+    platform: linux/amd64
+    environment:
+      POSTGRES_USER: mireqo
+      POSTGRES_PASSWORD: mireqo_local
+      POSTGRES_DB: mireqo_dev
+    ports: ['127.0.0.1:54329:5432']
+    volumes: ['development:/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U mireqo -d mireqo_dev']
+      interval: 2s
+      timeout: 2s
+      retries: 30
+  test-db:
+    image: postgis/postgis:17-3.5@sha256:01a6a70e41e6c4467c8f55f6063555ed72db2d6662cd0d571040d42eadaeb6f6
+    platform: linux/amd64
+    profiles: [test]
+    environment:
+      POSTGRES_USER: mireqo_test
+      POSTGRES_PASSWORD: mireqo_test_local
+      POSTGRES_DB: mireqo_test
+    ports: ['127.0.0.1:54330:5432']
+    tmpfs: ['/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U mireqo_test -d mireqo_test']
+      interval: 2s
+      timeout: 2s
+      retries: 30
+volumes:
+  development:

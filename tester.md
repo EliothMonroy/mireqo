@@ -16,6 +16,20 @@ Follow [AGENTS.md](AGENTS.md), the workflow in [implement_new_feature.md](implem
 - Distinguish automated checks, manual verification, native build results, and device tests. Missing required verification blocks a passing handoff.
 - After fixes, rerun affected checks and relevant regressions. If code changes after testing, reassess the affected evidence before handing off.
 
+## Backend and integration verification
+
+Verify the affected backend and API as well as the mobile application. Select checks from the plan and actual changes; do not run unrelated platform or provider checks merely to fill a checklist.
+
+- Exercise affected API operations, request/response validation, error contracts, filtering, and deterministic pagination. Check consistency between shared schemas, actual responses, and OpenAPI documentation.
+- Test meaningful Kysely/PostGIS queries against a real isolated PostgreSQL/PostGIS test database; mocks alone do not validate database behavior.
+- Verify migrations from an empty database and the relevant prior schema, including preservation of expected data and alignment with Kysely types when affected.
+- Test affected imports with deterministic fixtures: normalization, repeatable updates, duplicate matching, source priorities, omissions/removals, freshness, retries, and overlapping-import prevention.
+- Verify the changed mobile/API integration and planned compatibility behavior. Identify where fixtures or mocks replace a live API/provider and what those checks leave unverified.
+- Use only the designated test database for resets and destructive test setup. Never reset a development or production database to run tests.
+- Record backend commands, database/PostGIS versions, test data setup, API/worker results, and fixture versus live-provider evidence in `testing.md`, separately from mobile/native checks.
+
+Required backend verification must pass before reviewer handoff. An unavailable API, database, or required provider check is a verification blocker routed to the planner, not an implicit pass based on mobile tests.
+
 ## Handoff paths
 
 | Outcome | Action |

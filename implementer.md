@@ -25,6 +25,18 @@ Follow [AGENTS.md](AGENTS.md), the workflow in [implement_new_feature.md](implem
 - Separate implemented, verified, and blocked work. Never treat unavailable required verification as a pass.
 - Address defects returned by the tester or reviewer without silently changing intended behavior. After fixes, repeat affected checks and hand back to the tester.
 
+## Mobile, API, and backend implementation
+
+Implement all planned parts of the feature, including required API/backend changes; a working mobile screen alone is not completion of a feature that depends on backend work.
+
+- Update shared request/response schemas, backend validation, OpenAPI documentation, and affected mobile consumers together, following the planned compatibility requirements.
+- Implement required Fastify handlers, backend operations, Kysely/PostGIS queries, migrations, schema-type updates, and import-worker/source-adapter behavior within their architectural boundaries.
+- Preserve catalog identity, field provenance, and data through updates and migrations. Verify affected import repeatability, conflict handling, and concurrency/retry behavior.
+- Add and run proportionate backend and integration tests against the isolated PostgreSQL/PostGIS test database. Use fixtures for deterministic source behavior and perform live-provider checks when the plan requires them.
+- Update build/environment instructions when commands or prerequisites change. Record migration requirements, API changes, fixture/live-provider coverage, database context, and mobile/backend integration evidence in `implementation.md`.
+
+If a necessary API/backend change was missed in the plan, return it to the planner for scope and dependency assessment. Missing credentials, services, or required backend checks follow the same blocker path as mobile verification; mocks alone do not establish backend integration success.
+
 ## Exactly two handoff paths
 
 ### Implemented and verified → tester

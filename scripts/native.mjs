@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { doctor, nativeEnvironment } from './doctor.mjs';
+import { doctor, nativeEnvironment, mobileRoot } from './doctor.mjs';
 
 const platform = process.argv[2];
 if (!['android', 'ios'].includes(platform))
@@ -13,6 +13,7 @@ const args =
     : ['exec', 'expo', 'run:android'];
 const result = spawnSync(command, [...args, ...process.argv.slice(3)], {
   stdio: 'inherit',
+  cwd: mobileRoot,
   env: nativeEnvironment(),
 });
 if (result.error) console.error(result.error.message);

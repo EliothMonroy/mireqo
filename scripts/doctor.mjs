@@ -4,12 +4,22 @@ import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+export const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
+export const mobileRoot = path.join(repositoryRoot, 'apps/mobile');
+
 export function nativeEnvironment(env = process.env, home = homedir()) {
   const sdk =
     env.ANDROID_HOME ||
     env.ANDROID_SDK_ROOT ||
     path.join(home, 'Library/Android/sdk');
-  return { ...env, ANDROID_HOME: sdk, ANDROID_SDK_ROOT: sdk };
+  return {
+    ...env,
+    ANDROID_HOME: sdk,
+    ANDROID_SDK_ROOT: sdk,
+    BUNDLE_GEMFILE: path.join(repositoryRoot, 'Gemfile'),
+    BUNDLE_PATH: path.join(repositoryRoot, 'vendor/bundle'),
+    BUNDLE_APP_CONFIG: path.join(repositoryRoot, '.bundle'),
+  };
 }
 
 export function inspectHost({
@@ -27,7 +37,7 @@ export function inspectHost({
     result(nodeVersion === nodePin, `Node ${nodeVersion}; required ${nodePin}`),
     result(pnpm === pnpmPin, `pnpm ${pnpm || 'missing'}; required ${pnpmPin}`),
     result(
-      exists('node_modules/expo/package.json'),
+      exists('apps/mobile/node_modules/expo/package.json'),
       'Local dependencies: run mise exec -- pnpm install --frozen-lockfile if missing',
     ),
   ];
@@ -79,11 +89,15 @@ export function doctor(scope = 'all') {
     });
     return r.status === 0 ? (r.stdout || r.stderr).trim() : '';
   };
-  const manifest = JSON.parse(readFileSync('package.json', 'utf8'));
-  const nodePin = /node = "([^"]+)"/.exec(readFileSync('mise.toml', 'utf8'))[1];
+  const manifest = JSON.parse(
+    readFileSync(path.join(repositoryRoot, 'package.json'), 'utf8'),
+  );
+  const nodePin = /node = "([^"]+)"/.exec(
+    readFileSync(path.join(repositoryRoot, 'mise.toml'), 'utf8'),
+  )[1];
   const groups = inspectHost({
     run,
-    exists: existsSync,
+    exists: (file) => existsSync(path.resolve(repositoryRoot, file)),
     platform: process.platform,
     env: nativeEnvironment(),
     nodeVersion: process.versions.node,

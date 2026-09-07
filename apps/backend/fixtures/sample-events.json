@@ -1,0 +1,10 @@
+[
+  {
+    "fixture": true,
+    "sourceId": "synthetic-1",
+    "title": "Synthetic development event",
+    "date": "2030-01-15",
+    "timeZone": "America/Mexico_City",
+    "price": { "kind": "unknown" }
+  }
+]

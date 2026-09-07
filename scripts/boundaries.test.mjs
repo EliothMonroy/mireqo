@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { ESLint } from 'eslint';
 
-const linter = new ESLint();
+const linter = new ESLint({
+  cwd: new URL('../apps/mobile/', import.meta.url).pathname,
+});
 async function violations(code, filePath) {
   const [result] = await linter.lintText(code, { filePath });
   return result.messages.filter((m) => m.ruleId === 'mireqo/boundaries');

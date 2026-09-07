@@ -1,1 +1,2 @@
+2026-09-07 — Establish the pnpm backend workspace with Fastify health/readiness/OpenAPI, shared contracts, PostgreSQL/PostGIS migrations and isolated tests, and a transactional import-worker foundation while preserving Android/iOS launch behavior.
 2026-09-06 — Establish the Expo mobile foundation with pinned local tooling, architecture checks, automated tests, and verified Android/iOS development builds.
