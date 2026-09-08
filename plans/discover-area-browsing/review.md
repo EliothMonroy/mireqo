@@ -13,3 +13,12 @@ No application edits were made during review. No concrete new functionality beyo
 ## Delivery status
 
 Feature approved; delivery in progress. Changelog entry added for 2026-09-08. Task-related file inventory and machine-only secret-pattern audit inspected; no private-key/token patterns flagged. Historical records are preserved without being used as review input. Commit, push, PR and helper cleanup outcomes will be recorded after execution. Preserve the authoritative worktree (active API/Metro) and open PR source branch. Main checkout planning copies remain untouched.
+
+## Completed delivery — 2026-09-08
+
+- Feature commit: `1e34b6ade103b9380aae115a495021a7de576b85` (`feat - add Discover browsing by area with local demo catalog`).
+- Branch push succeeded to the existing `origin` at `https://github.com/EliothMonroy/mireqo.git`. Read-only GitHub checks verified authenticated owner EliothMonroy, public repository and admin/push permission after initial automatic approval rejection; the evidence-backed retry was approved and succeeded.
+- [PR #3](https://github.com/EliothMonroy/mireqo/pull/3) created against `main`, observed open. Not merged or released.
+- Removed clean unused `codex/discover-mobile-ui` helper worktree/branch. Removed completed `codex/discover-backend` helper worktree/branch after preserving all 16 original changed/untracked files plus its binary patch in `/Users/eliothmonroy/Documents/Github/mireqo/.worktrees/discover-backend-preserved-20260908.tar.gz`. Every archived byte was verified against originals; archive SHA256 `4cb3f5eacff7fc276fe2310dc15c1d38f756980b8f5623440bfccc25055dc878`. The archive preserves earlier versions of four integrated files as well as identical work and notes. Both helper branches had no divergent commits; coordinator confirmed helpers were inactive.
+- Retained the authoritative `/Users/eliothmonroy/Documents/Github/mireqo/.worktrees/discover-area-browsing` and `codex/discover-area-browsing` for the open PR and active API/Metro. Main checkout and original untracked planning copies remain untouched. Existing databases/Colima profile and development data remain intact.
+- This post-delivery record is documentation-only and is preserved in a follow-up commit. No reviewed application source changed.
