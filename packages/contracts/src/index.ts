@@ -20,3 +20,4 @@ export function parseHealth(value: unknown): Health {
     throw new Error('Invalid health response');
   return value;
 }
+export * from './catalog.ts';

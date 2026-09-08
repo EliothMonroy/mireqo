@@ -1,6 +1,6 @@
 # Development environment and builds
 
-Mireqo uses local Expo development builds for Android and iOS. The foundation provides the commands below; the backend foundation is implemented and product features remain separate work. Application boundaries are in [architecture.md](architecture.md), and code-change responsibilities are in [implement_new_feature.md](implement_new_feature.md).
+Mireqo uses local Expo development builds for Android and iOS. The workspace provides the commands below, including the first Discover slice and its explicit local demo catalog. Application boundaries are in [architecture.md](architecture.md), and code-change responsibilities are in [implement_new_feature.md](implement_new_feature.md).
 
 ## Toolchain and installation
 
@@ -88,7 +88,7 @@ SDK 57 `expo prebuild` cleans native directories by default. Omit `--no-clean` o
 
 ## Verification policy
 
-The current foundation tests cover diagnostic readiness/mismatch handling, import boundaries, and the accessible launch screen. Future domain, adapter, storage, and feature tests are added with those implementations; empty layers are not scaffolded solely for tests.
+Tests cover diagnostic readiness/mismatch handling, import boundaries, shared catalog validation, local preference serialization and recovery, Query area races/refresh/pagination, truthful event formatting and Discover recovery actions. Native verification remains separate from host tests.
 
 ESLint enforces feature isolation and shared-layer imports. TypeScript uses strict mode and checked indexed access. Prettier excludes generated files and pre-existing guidance/specification documents to avoid unrelated formatting changes.
 
@@ -127,19 +127,19 @@ mise exec -- pnpm db:seed
 | `pnpm worker`                                   | Start worker with optional root .env; no live sources                                                 |
 | `pnpm test:integration`                         | Reset only allowlisted test schema; run real PostGIS/migration/import tests                           |
 
-Copy `.env.example` to `.env` if overrides are needed. API defaults to 127.0.0.1:3000. `/v1/health` is database-independent, `/v1/ready` returns 503 until the database and migrations are ready, and `/v1/openapi.json` serves schema-generated OpenAPI. Common errors contain `error.code` and `error.message`; internal details are not returned. No event endpoints exist yet.
+Copy `.env.example` to `.env` if overrides are needed. API defaults to 127.0.0.1:3000. `/v1/health` is database-independent, `/v1/ready` returns 503 until the database and migrations are ready, and `/v1/openapi.json` serves schema-generated OpenAPI. Common errors contain `error.code` and `error.message`; internal details are not returned. The local demo catalog exposes `/v1/areas` and `/v1/events?areaId=coacalco&limit=6`; responses include explicit demo provenance/reference date. Event limits default to 6 and cap at 30. Cursors bind area, order boundary and dataset version. Malformed/stale/cross-area cursors return 400, unknown areas 404 and catalog/database unavailability 503.
 
-For future mobile API use, iOS simulator reaches host localhost, Android emulator uses 10.0.2.2 or `adb reverse tcp:3000 tcp:3000`, and physical devices need a reachable host address plus deliberately configured HOST binding. The foundation screen makes no API request. EXPO_PUBLIC values are public; provider secrets never belong there.
+For mobile API use, iOS simulator reaches host localhost, Android emulator uses 10.0.2.2 or `adb reverse tcp:3000 tcp:3000`, and physical devices need a reachable host address plus deliberately configured HOST binding. Discover validates and consumes this API; it never replaces failures with local fake events. `EXPO_PUBLIC_API_URL` defaults to `http://localhost:3000`. EXPO_PUBLIC values are public; provider secrets never belong there.
 
 The worker uses an empty source registry by default. Set WORKER_FIXTURE=success or fail deliberately to exercise a synthetic job; WORKER_INTERVAL_MS controls its local loop, not production provider policy. Session advisory locks serialize each source across worker processes; connection loss releases ownership and the next owner marks abandoned runs interrupted. Job writes are transactional and failures recorded without exception details. Graceful signals stop scheduling and close connections after active work.
 
 ### Schema and verification
 
-Kysely migrations are authoritative; never edit applied migrations. Keep explicit database interfaces synchronized and verify real selected/inserted columns. Migrations and seeds never run implicitly on API/worker startup. Operational import records and fixture counters are the only tables: synthetic sample event inputs live in `apps/backend/fixtures`, and catalog event seeding remains deferred until an event schema exists.
+Kysely migrations are authoritative; never edit applied migrations. Keep explicit database interfaces synchronized and verify real selected/inserted columns. Migrations and seeds never run implicitly on API/worker startup. Migration003 adds browse areas, catalog events and stable demo source records alongside existing operational import records/fixture counters. Explicit catalog seeding is separate from the operational seed and never runs on API or worker startup.
 
 Start both databases, migrate/seed development, then run integration tests. Tests refuse non-loopback, wrong port/user/database, and URL override parameters before destructive SQL. They verify fresh and repeated migrations, upgrade preservation, spatial distance, transactional failure, independent source work, cross-process exclusion and crash recovery, readiness, and unchanged development records. Test database reset destroys only test schema data; development reset requires the separate explicit flag above.
 
-`pnpm check` does not require containers or devices; `pnpm test:integration` does require running databases. Native compilation and launch remain separate checks after workspace/native changes. Live providers, production hosting and catalog behavior are not covered by foundation fixture tests.
+`pnpm check` does not require containers or devices; `pnpm test:integration` does require running databases. Native compilation and launch remain separate checks after workspace/native changes. Real integration tests cover exact area membership and tied cursor pages, invalid/stale cursors, migration upgrades, demo repeatability and rollback, unrelated-row preservation, contract/OpenAPI and catalog outage responses. Live providers and production hosting remain unverified and outside this slice.
 
 ## References
 
@@ -150,3 +150,16 @@ Start both databases, migrate/seed development, then run integration tests. Test
 - [Expo unit testing](https://docs.expo.dev/develop/unit-testing/).
 
 Validate upgrades against the pinned SDK's compatibility data and repeat the relevant checks/native builds before changing the supported toolchain.
+
+## Discover local demo workflow
+
+After `pnpm build` and `pnpm db:migrate`, explicitly seed the catalog and start the API:
+
+```sh
+mise exec -- pnpm db:seed:demo 2026-09-07
+mise exec -- pnpm api
+```
+
+The optional ISO reference date makes fixtures reproducible. Omitting it uses the Mexico City local date at this explicit invocation. API reads never reseed or move dates. Same-date reseeding preserves stable identities/content; changing the date invalidates old cursors so mobile can refresh. Only allowlisted loopback development54329 and test54330 database identities are accepted, with `NODE_ENV` other than production. Catalog routes return503 on other/production configurations. These are synthetic demonstration events, never production/live listings.
+
+TanStack Query5.102.8, Expo SQLite57.0.2 and Expo Network57.0.1 are exactly pinned; SQLite/network versions match Expo57.0.20 bundled compatibility data. Rebuild both native apps after installing these additions. AppState focus and native connectivity are wired centrally; an HTTP failure alone never claims device offline. SQLite uses `mireqo.db` with a namespaced versioned migration and selected-area preference; catalog content persists only for the session. Artwork origins and native verification are recorded in [feature implementation](plans/discover-area-browsing/implementation.md) and [artwork notes](plans/discover-area-browsing/artwork.md).

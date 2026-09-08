@@ -52,3 +52,21 @@ export function requireTestTarget(value: string): string {
     throw new Error('Refusing non-allowlisted test database target');
   return value;
 }
+export function isDemoTarget(
+  value: string,
+  environment = process.env.NODE_ENV,
+): boolean {
+  const target = new URL(databaseUrl(value));
+  return (
+    environment !== 'production' &&
+    ['localhost', '127.0.0.1'].includes(target.hostname) &&
+    !target.search &&
+    !target.hash &&
+    ((target.port === '54329' &&
+      target.pathname === '/mireqo_dev' &&
+      target.username === 'mireqo') ||
+      (target.port === '54330' &&
+        target.pathname === '/mireqo_test' &&
+        target.username === 'mireqo_test'))
+  );
+}

@@ -1,3 +1,4 @@
+import { verifyCatalog } from './catalog-integration.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
@@ -29,6 +30,8 @@ test('real PostGIS, migrations, isolation, imports and process-loss recovery', a
       })
       .returning('id')
       .executeTakeFirstOrThrow();
+    await migrate(db, '002_fixture_state');
+    await assert.rejects(() => ready(db));
     await migrate(db);
     await migrate(db);
     await ready(db);
@@ -45,6 +48,7 @@ test('real PostGIS, migrations, isolation, imports and process-loss recovery', a
       (await db.selectFrom('fixture_state').selectAll().execute()).length,
       1,
     );
+    await verifyCatalog(db, url);
     const spatial = await sql<{
       distance: number;
       near: boolean;
