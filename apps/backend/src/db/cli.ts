@@ -1,3 +1,4 @@
+import { seedDemo } from './demo.ts';
 import { config } from '../config.ts';
 import { connect } from './database.ts';
 import { migrate, seed } from './migrations.ts';
@@ -6,7 +7,9 @@ try {
   const operation = process.argv[2];
   if (operation === 'migrate') await migrate(db);
   else if (operation === 'seed') await seed(db);
-  else throw new Error('Expected migrate or seed');
+  else if (operation === 'seed-demo')
+    await seedDemo(db, config().databaseUrl, process.argv[3]);
+  else throw new Error('Expected migrate, seed, or seed-demo');
   console.log('Database operation completed');
 } catch {
   console.error(

@@ -1,6 +1,6 @@
 # Mireqo architecture
 
-This document records the agreed architecture for Mireqo's Android and iOS MVP. The Expo application, pnpm workspace, backend API/worker foundation, and shared health/error contracts are implemented. Catalog ingestion, product features, and associated data layers remain pending.
+This document records the agreed architecture for Mireqo's Android and iOS MVP. The Expo application, pnpm workspace, backend API/worker foundation, and first Discover area-browsing slice are implemented. Discover uses shared area/event contracts, a local-development PostgreSQL demo catalog, TanStack Query session data and an Expo SQLite area preference. Live ingestion and later product stages remain pending; see [slice decisions](plans/discover-area-browsing/decisions.md).
 
 Product scope and behavior remain defined by the [high-level specification](spec/high-level-spec.md), [feature specification](spec/feature-spec.md), and [UI specification](spec/ui-spec.md). Repository guidance is defined in [AGENTS.md](AGENTS.md); the code-change workflow is defined in [implement_new_feature.md](implement_new_feature.md). Development environment setup, dependency installation, native build configuration, and build/check commands are defined in [build.md](build.md), which distinguishes the agreed workflow from pending implementation.
 
@@ -24,7 +24,7 @@ Product scope and behavior remain defined by the [high-level specification](spec
 
 Organize the mobile application by feature, with explicit boundaries between presentation, shared product rules, and data access. No additional global state library is selected. Introduce abstractions for demonstrated needs; simple operations may remain functions rather than requiring classes or a layer for every action.
 
-Specific event sources, launch coverage, production hosting, visual design, and styling library remain open decisions.
+Initial demo coverage is Coacalco and Tultitlán municipalities and all of Mexico City. The first slice uses native StyleSheet semantic tokens, warm editorial illustration cards, and system fonts. Live event sources, production coverage and hosting remain open decisions.
 
 ## Workspace organization
 
@@ -163,7 +163,7 @@ External event sources
 - Source adapters handle provider-specific fetching and mapping into the shared backend event model. Preserve provider references and field provenance; validate external data at runtime.
 - Import processing owns normalization, matching, and repeatable updates. Keep it separate from HTTP route handling.
 - Catalog modules own event identity and selection rules. Database-access modules expose focused operations, such as searching events or upserting a source record.
-- The API queries the stored catalog for discovery, search, event details, categories, and city lookup. Exact endpoint paths beyond `/v1`, city data sourcing, schemas, and ranking rules remain to be defined.
+- The API queries the stored catalog. Implemented endpoints are `/v1/areas` and `/v1/events?areaId=...&limit=...&cursor=...` for exact browse-area membership. Pagination uses local schedule-date/time keys with stable event ID, bound to area and demo dataset version; date-only sorts before exact times on that date and unannounced last. Search, event details, categories, geographic lookup and later ranking remain pending.
 - Keep Kysely queries and explicit SQL inside backend data-access modules. Parameterize values and allowlist dynamic identifiers and ordering options. Group related writes into transactions.
 - Versioned migrations define the database schema. Keep Kysely schema types aligned with migrations; type checking is not a substitute for testing actual PostgreSQL/PostGIS queries.
 
@@ -295,3 +295,11 @@ Consult documentation compatible with the versions eventually pinned in the repo
 Fastify factory is separate from process startup. Health, readiness, and OpenAPI are the only public endpoints. Shared TypeBox schemas provide runtime validation and TypeScript types; mobile data-boundary tests consume them without coupling the launch screen to a server.
 
 Kysely data access stays in backend modules. Versioned migrations create PostGIS and operational import/fixture tables; no event catalog schema is implied. The separate worker has no live adapters by default. Explicit fixture jobs demonstrate transaction rollback, persisted run outcomes, session advisory locking on a dedicated connection, and recovery of abandoned running records after process loss. Hash collisions may conservatively serialize unrelated sources; they cannot permit overlapping imports. Production schedules, provider policies, matching and freshness remain deferred.
+
+## Implemented Discover slice
+
+`bootstrap/AppProviders` owns Query lifecycle/connectivity and the SQLite preference store. `bootstrap/DiscoverExperience` composes independent Discover and location features; routes remain thin. Responses are runtime-validated before Query cache insertion; query keys include area, cancellation prevents wasted requests, and serialized preference writes preserve the latest intent. Hydration finishes before event lookup. Unknown stored areas return to selection; failed local writes surface recovery. Only selected area is persisted, not event catalogs.
+
+Migration003 adds indexed exact area membership, JSON event summaries with identity/discriminant constraints, and stable demo source references. Explicit `db:seed:demo` transactionally updates only reserved demo identities. Serving and seeding refuse production and targets outside allowlisted local development/test databases. The empty worker source registry and operational import records remain unchanged. Original bundled art is illustrative, not provider imagery. Demo provenance and seed reference date appear on Discover; reads never advance fixture dates.
+
+The stage intentionally omits collections/date/category filters, details/save and tabs. Full product requirements remain in the specifications; this slice does not claim their completion.

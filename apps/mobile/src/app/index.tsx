@@ -1,1 +1,2 @@
-export { default } from '@/features/foundation/FoundationScreen';
+import { DiscoverExperience } from '../bootstrap/DiscoverExperience';
+export default DiscoverExperience;

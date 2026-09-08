@@ -12,7 +12,8 @@
     "db:migrate": "node --env-file-if-exists=../../.env src/db/cli.ts migrate",
     "db:seed": "node --env-file-if-exists=../../.env src/db/cli.ts seed",
     "test": "node --test test/unit.test.ts",
-    "test:integration": "node --env-file-if-exists=../../.env --test test/integration.test.ts"
+    "test:integration": "node --env-file-if-exists=../../.env --test test/integration.test.ts",
+    "db:seed:demo": "node --env-file-if-exists=../../.env src/db/cli.ts seed-demo"
   },
   "dependencies": {
     "@mireqo/contracts": "workspace:*",

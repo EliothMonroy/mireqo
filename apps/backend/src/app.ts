@@ -1,13 +1,22 @@
+import { CatalogError, type Catalog } from './catalog.ts';
 import Fastify, { type FastifyError } from 'fastify';
 import swagger from '@fastify/swagger';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
-import { HealthSchema, ErrorSchema } from '@mireqo/contracts';
+import {
+  AreasResponseSchema,
+  EventsResponseSchema,
+  EventsQuerySchema,
+  HealthSchema,
+  ErrorSchema,
+} from '@mireqo/contracts';
 export async function createApp(
   checkReady: () => Promise<void>,
   logging = false,
+  catalog?: Catalog,
 ) {
   const app = Fastify({
     logger: logging,
+    ajv: { customOptions: { removeAdditional: false } },
     disableRequestLogging: true,
   }).withTypeProvider<TypeBoxTypeProvider>();
   await app.register(swagger, {
@@ -47,6 +56,63 @@ export async function createApp(
         return reply.code(503).send({
           error: { code: 'NOT_READY', message: 'Database is not ready' },
         });
+      }
+    },
+  );
+  const failure = (error: unknown) =>
+    error instanceof CatalogError
+      ? error
+      : new CatalogError(
+          503,
+          'CATALOG_UNAVAILABLE',
+          'Catalog is temporarily unavailable',
+        );
+  app.get(
+    '/v1/areas',
+    {
+      schema: {
+        response: {
+          200: AreasResponseSchema,
+          503: ErrorSchema,
+          500: ErrorSchema,
+        },
+      },
+    },
+    async (_request, reply) => {
+      try {
+        if (!catalog) throw new Error();
+        return await catalog.areas();
+      } catch (error) {
+        const problem = failure(error);
+        return reply
+          .code(503)
+          .send({ error: { code: problem.code, message: problem.message } });
+      }
+    },
+  );
+  app.get(
+    '/v1/events',
+    {
+      schema: {
+        querystring: EventsQuerySchema,
+        response: {
+          200: EventsResponseSchema,
+          400: ErrorSchema,
+          404: ErrorSchema,
+          503: ErrorSchema,
+          500: ErrorSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        if (!catalog) throw new Error();
+        return await catalog.events(request.query);
+      } catch (error) {
+        const problem = failure(error);
+        return reply
+          .code(problem.statusCode as 400 | 404 | 503)
+          .send({ error: { code: problem.code, message: problem.message } });
       }
     },
   );

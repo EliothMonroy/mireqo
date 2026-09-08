@@ -23,7 +23,8 @@
     "db:up": "docker compose -f infrastructure/compose.yaml up -d --wait db",
     "db:stop": "docker compose -f infrastructure/compose.yaml stop db",
     "db:test:up": "docker compose -f infrastructure/compose.yaml --profile test up -d --wait test-db",
-    "db:reset": "node scripts/reset-db.mjs"
+    "db:reset": "node scripts/reset-db.mjs",
+    "db:seed:demo": "pnpm --filter @mireqo/backend db:seed:demo"
   },
   "devDependencies": {
     "eslint": "9.39.1",

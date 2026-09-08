@@ -1,2 +1,3 @@
+2026-09-08 — Add Discover area selection and persistent preferences, backend-served local demo catalogs with cursor pagination, truthful event cards, and recoverable loading/offline states on Android and iOS.
 2026-09-07 — Establish the pnpm backend workspace with Fastify health/readiness/OpenAPI, shared contracts, PostgreSQL/PostGIS migrations and isolated tests, and a transactional import-worker foundation while preserving Android/iOS launch behavior.
 2026-09-06 — Establish the Expo mobile foundation with pinned local tooling, architecture checks, automated tests, and verified Android/iOS development builds.

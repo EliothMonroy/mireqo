@@ -1,7 +1,9 @@
+import * as catalogMigration from './catalog-migration.ts';
 import { Migrator } from 'kysely/migration';
 import { sql, type Kysely } from 'kysely';
 import type { Database } from './database.ts';
 export const migrations = {
+  '003_catalog': catalogMigration,
   '001_import_runs': {
     async up(db: Kysely<unknown>) {
       await sql`create extension if not exists postgis`.execute(db);

@@ -1,9 +1,14 @@
-import { config } from './config.ts';
+import { createCatalog } from './catalog.ts';
+import { config, isDemoTarget } from './config.ts';
 import { connect, ready } from './db/database.ts';
 import { createApp } from './app.ts';
 const settings = config();
 const db = connect(settings.databaseUrl);
-const app = await createApp(() => ready(db), true);
+const app = await createApp(
+  () => ready(db),
+  true,
+  createCatalog(db, isDemoTarget(settings.databaseUrl)),
+);
 app.addHook('onClose', async () => db.destroy());
 let stopping = false;
 async function stop() {
