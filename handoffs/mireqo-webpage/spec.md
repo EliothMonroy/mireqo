@@ -8,7 +8,7 @@ Build a single-page website introducing **Mireqo**, a mobile app for discovering
 
 The priorities are **mobile first, responsive design, and concision**. A visitor should understand what Mireqo does within a few seconds. This is a product introduction, not a browser version of the app.
 
-This package is self-contained. Implement in the destination project chosen by the owner; use its existing conventions. This document does not authorize changes to the Mireqo mobile app, a deployment, or a new backend.
+This brief references shared repository assets in [`assets/brand/`](../../assets/brand/) and [`assets/screenshots/`](../../assets/screenshots/). When handing it to another agent, provide those directories together with this document, preserving their repository-relative layout, or give the agent access to the repository. The handoff folder intentionally contains only this spec. Implement in the destination project chosen by the owner; use its existing conventions. This document does not authorize changes to the Mireqo mobile app, a deployment, or a new backend.
 
 ## Product facts and claim boundaries
 
@@ -29,7 +29,7 @@ Use English for this first page, matching the supplied app screens. Keep public 
 
 ### 1. Compact header
 
-Use the approved **Open City** logo supplied as `mireqo-logo.svg`: the terracotta twin-arch “m” symbol and outlined charcoal `mireqo` wordmark. Link it to the top of the page with the accessible name “Mireqo — home.” Do not replace it with typeset text or invent another symbol. Display it around 140–176px wide, preserving its 4:1 aspect ratio.
+Use the approved **Open City** logo supplied as [mireqo-logo.svg](../../assets/brand/mireqo-logo.svg): the terracotta twin-arch “m” symbol and outlined charcoal `mireqo` wordmark. Link it to the top of the page with the accessible name “Mireqo — home.” Do not replace it with typeset text or invent another symbol. Display it around 140–176px wide, preserving its 4:1 aspect ratio.
 
 Optional navigation: **Features** → `#app`, **Coverage** → `#coverage`. Keep these visible and simple on mobile; no hamburger menu is needed for two links.
 
@@ -53,11 +53,11 @@ Section heading: **Discover. Explore. Save.**
 
 Build three visual feature cards, each combining its screenshot, heading, and benefit. These are the main feature explanation; do not repeat them in another grid further down the page.
 
-| Screenshot          | Heading                            | Supporting copy                                                                                               |
-| ------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `discover.png`      | **Find something for your day.**   | Choose an area, browse categories, and explore events for today, tomorrow, or the weekend.                    |
-| `event-details.png` | **Get the details before you go.** | Check dates, venue, price, and event information. Share a find or open available location and event links.    |
-| `saved.png`         | **Keep your next outing close.**   | Save events to a personal shortlist, browse Upcoming and Past, and read previously saved information offline. |
+| Screenshot                                                      | Heading                            | Supporting copy                                                                                               |
+| --------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [discover.png](../../assets/screenshots/discover.png)           | **Find something for your day.**   | Choose an area, browse categories, and explore events for today, tomorrow, or the weekend.                    |
+| [event-details.png](../../assets/screenshots/event-details.png) | **Get the details before you go.** | Check dates, venue, price, and event information. Share a find or open available location and event links.    |
+| [saved.png](../../assets/screenshots/saved.png)                 | **Keep your next outing close.**   | Save events to a personal shortlist, browse Upcoming and Past, and read previously saved information offline. |
 
 Place this visible caption directly beside or beneath the previews: **Actual development screens. Events shown are fictional examples.**
 
@@ -69,7 +69,7 @@ Heading: **Starting close to home.**
 
 Copy: **Initial coverage: Coacalco and Tultitlán in Estado de México, plus all of Mexico City. Browse without an account or precise location permission.**
 
-Use `mireqo-mark.svg` as a small decorative footer mark beside: **Mireqo — a little closer to what’s on.** Hide the decorative image from screen readers when the adjacent text already identifies the brand.
+Use [mireqo-mark.svg](../../assets/brand/mireqo-mark.svg) as a small decorative footer mark beside: **Mireqo — a little closer to what’s on.** Hide the decorative image from screen readers when the adjacent text already identifies the brand.
 
 No additional closing sales pitch, signup form, FAQ, blog, or repeated call to action is needed.
 
@@ -93,18 +93,18 @@ Use a legible system sans-serif or the destination project’s existing font for
 
 ## Approved logo and favicon — required
 
-The owner selected **option 2: Open City**. Its paired archways form an “m” and suggest welcoming places to explore. Use the production vector assets provided alongside this spec; the earlier concept sheet is not a production logo.
+The owner selected **option 2: Open City**. Its paired archways form an “m” and suggest welcoming places to explore. Use the production vector assets in [`assets/brand/`](../../assets/brand/); the earlier concept sheet is not a production logo.
 
-| Use                                | Required asset                           |
-| ---------------------------------- | ---------------------------------------- |
-| Header on the cream/light page     | `mireqo-logo.svg`                        |
-| Logo on a dark background, if used | `mireqo-logo-on-dark.svg`                |
-| Compact/footer symbol              | `mireqo-mark.svg`                        |
-| Modern browser favicon             | `favicon.svg`                            |
-| Fallback favicon                   | `favicon.ico` (16, 32, and 48px entries) |
-| Apple home-screen bookmark         | `apple-touch-icon.png` (180 × 180)       |
+| Use                                | Required asset                                                              |
+| ---------------------------------- | --------------------------------------------------------------------------- |
+| Header on the cream/light page     | [mireqo-logo.svg](../../assets/brand/mireqo-logo.svg)                       |
+| Logo on a dark background, if used | [mireqo-logo-on-dark.svg](../../assets/brand/mireqo-logo-on-dark.svg)       |
+| Compact/footer symbol              | [mireqo-mark.svg](../../assets/brand/mireqo-mark.svg)                       |
+| Modern browser favicon             | [favicon.svg](../../assets/brand/favicon.svg)                               |
+| Fallback favicon                   | [favicon.ico](../../assets/brand/favicon.ico) (16, 32, and 48px entries)    |
+| Apple home-screen bookmark         | [apple-touch-icon.png](../../assets/brand/apple-touch-icon.png) (180 × 180) |
 
-Keep the actual files locally in the website's public assets. The following assumes these files are served from the site root; adjust every URL consistently for a subdirectory deployment:
+Copy the required files from `assets/brand/` into the destination website's public assets. Repository-relative source paths below are not public website URLs. The following assumes these files are served from the site root; adjust every URL consistently for a subdirectory deployment:
 
 ```html
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
@@ -113,11 +113,11 @@ Keep the actual files locally in the website's public assets. The following assu
 <meta name="theme-color" content="#93442C" />
 ```
 
-`site.webmanifest` and its 192/512px icons are also included for optional browser home-screen metadata. If using the manifest, copy its referenced images alongside it and add a `rel="manifest"` link. This does not request a service worker, an install prompt, offline webpage behavior, or a web version of the mobile app.
+[site.webmanifest](../../assets/brand/site.webmanifest) and its 192/512px icons are also included for optional browser home-screen metadata. If using the manifest, copy its referenced images alongside it and add a `rel="manifest"` link. This does not request a service worker, an install prompt, offline webpage behavior, or a web version of the mobile app.
 
-Preserve logo colors, proportions, and clear space. Do not recolor through CSS filters, stretch, redraw, add shadows/gradients, or use the wordmark inside a tiny favicon. The favicon uses only the approved arch symbol. See `brand-guide.md` for the complete website/app asset map, variants, and integration notes.
+Preserve logo colors, proportions, and clear space. Do not recolor through CSS filters, stretch, redraw, add shadows/gradients, or use the wordmark inside a tiny favicon. The favicon uses only the approved arch symbol. See the [brand guide](../../assets/brand/brand-guide.md) for the complete website/app asset map, variants, and integration notes.
 
-![Approved Mireqo identity, light and dark logos with icon examples](mireqo-brand-preview.png)
+![Approved Mireqo identity, light and dark logos with icon examples](../../assets/brand/mireqo-brand-preview.png)
 
 This preview is for implementation reference; it is not an additional public webpage section. The supplied app screenshots predate the new identity; retain them unchanged and do not claim the logo is already installed in those builds.
 
@@ -132,19 +132,19 @@ This preview is for implementation reference; it is not an additional public web
 
 ## Screenshot assets
 
-Three original, unmodified iOS simulator captures are included. Each PNG is **1206 × 2622**. Their use illustrates the shared app experience; it does not imply Android screenshots were captured here.
+Three original, unmodified iOS simulator captures are available in [`assets/screenshots/`](../../assets/screenshots/). Each PNG is **1206 × 2622**. Their use illustrates the shared app experience; it does not imply Android screenshots were captured here.
 
-| File                | Suggested alternative text                                                                            | Original repository source                                  |
-| ------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `discover.png`      | Mireqo Discover in Tultitlán, showing date shortcuts and event categories.                            | `plans/event-details-saved/ios-date-back-tabs-retained.png` |
-| `event-details.png` | Mireqo event details showing a demo music event, its date, venue, price, and Save and Share controls. | `plans/event-details-saved/ios-detail-saved.png`            |
-| `saved.png`         | Mireqo Saved with Upcoming and Past tabs and a saved demo music event.                                | `plans/event-details-saved/ios-saved-upcoming.png`          |
+| File                                                            | Suggested alternative text                                                                            | Original repository source                                  |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [discover.png](../../assets/screenshots/discover.png)           | Mireqo Discover in Tultitlán, showing date shortcuts and event categories.                            | `plans/event-details-saved/ios-date-back-tabs-retained.png` |
+| [event-details.png](../../assets/screenshots/event-details.png) | Mireqo event details showing a demo music event, its date, venue, price, and Save and Share controls. | `plans/event-details-saved/ios-detail-saved.png`            |
+| [saved.png](../../assets/screenshots/saved.png)                 | Mireqo Saved with Upcoming and Past tabs and a saved demo music event.                                | `plans/event-details-saved/ios-saved-upcoming.png`          |
 
 Use these assets rather than fabricated UI mockups. Do not repaint, replace text, remove demo labels, or change dates inside them. These are dated development previews, not a live event feed. Keep original PNGs available; web-optimized copies are allowed if they preserve content and readability. Use local asset paths in the delivered website, not repository filesystem paths or third-party image hotlinks.
 
-| Discover                          | Event details                               | Saved                       |
-| --------------------------------- | ------------------------------------------- | --------------------------- |
-| ![Discover preview](discover.png) | ![Event details preview](event-details.png) | ![Saved preview](saved.png) |
+| Discover                                                   | Event details                                                        | Saved                                                |
+| ---------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------- |
+| ![Discover preview](../../assets/screenshots/discover.png) | ![Event details preview](../../assets/screenshots/event-details.png) | ![Saved preview](../../assets/screenshots/saved.png) |
 
 ## Accessibility, performance, and functionality
 

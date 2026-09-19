@@ -2,7 +2,7 @@
 
 Approved direction: option 2, Open City. Prepared 2026-09-19.
 
-The mark is a compact lowercase “m” formed by two welcoming archways. The left arch is deliberately taller. This package turns the selected concept into clean, scalable vector geometry and matching raster exports. All files sit beside `spec.md` for a portable handoff.
+The mark is a compact lowercase “m” formed by two welcoming archways. The left arch is deliberately taller. This package turns the selected concept into clean, scalable vector geometry and matching raster exports. The canonical brand resources live in the repository-root `assets/brand/` directory for reuse by the app and website. Filenames in this guide are relative to this directory. App screenshots live separately in [`../screenshots/`](../screenshots/).
 
 ## Primary files
 
@@ -43,23 +43,23 @@ Every icon and splash PNG also has a corresponding SVG source with the same base
 
 ## Website use
 
-Follow the required header/footer/favicon mapping and HTML in `spec.md`. Use SVG for the webpage logo. PNGs are fallback options for consumers that cannot display SVG. A home link should have one accessible brand label; avoid duplicate image/link announcements. A purely decorative repeated mark should use empty alt text.
+Follow the required header/footer/favicon mapping and HTML in the [website handoff spec](../../handoffs/mireqo-webpage/spec.md). Use SVG for the webpage logo. PNGs are fallback options for consumers that cannot display SVG. A home link should have one accessible brand label; avoid duplicate image/link announcements. A purely decorative repeated mark should use empty alt text.
 
 If including `site.webmanifest`, keep its icon filenames alongside the manifest or update its relative paths together. These files provide branding metadata, not an offline website or proof of installability. Do not introduce an install button.
 
 ## App integration handoff
 
-These assets are prepared for the existing Expo project. App configuration and installed binaries have not been changed by this asset-delivery task. A later app implementation should follow Mireqo's normal code-change workflow, copy the selected assets into `apps/mobile/assets/brand/`, and merge the following values into the existing `apps/mobile/app.json` without replacing unrelated configuration:
+These assets are prepared for the existing Expo project. App configuration and installed binaries have not been changed by this asset-delivery task. A later app implementation should follow Mireqo's normal code-change workflow, reference the selected canonical assets under `assets/brand/` from the app configuration, and merge the following values into the existing `apps/mobile/app.json` without replacing unrelated configuration:
 
 ```json
 {
   "expo": {
-    "icon": "./assets/brand/mireqo-app-icon.png",
+    "icon": "../../assets/brand/mireqo-app-icon.png",
     "android": {
-      "icon": "./assets/brand/mireqo-app-icon.png",
+      "icon": "../../assets/brand/mireqo-app-icon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/brand/mireqo-android-adaptive-foreground.png",
-        "monochromeImage": "./assets/brand/mireqo-android-adaptive-monochrome.png",
+        "foregroundImage": "../../assets/brand/mireqo-android-adaptive-foreground.png",
+        "monochromeImage": "../../assets/brand/mireqo-android-adaptive-monochrome.png",
         "backgroundColor": "#93442C"
       }
     }
