@@ -1,0 +1,381 @@
+{
+  "identity": "Mireqo / Open City",
+  "version": "1.0",
+  "prepared": "2026-09-19",
+  "files": [
+    {
+      "file": "apple-touch-icon.png",
+      "bytes": 3082,
+      "sha256": "2546056c9927fbe1ef660229d8701cebba8e919b9fed50a9609d96e2fb9b9a7d",
+      "width": 180,
+      "height": 180,
+      "png_color_type": 2
+    },
+    {
+      "file": "apple-touch-icon.svg",
+      "bytes": 715,
+      "sha256": "1bd2ef39b1f46c7d90c00465c4a50e53709675c107e41bbfd9ee0cd99a0561a9",
+      "viewBox": "0 0 180 180"
+    },
+    {
+      "file": "favicon-16.png",
+      "bytes": 453,
+      "sha256": "91bf66fa01be43f7d75a651984e606e3493d884f1263f4fa5fb5ad69e9ecf4e3",
+      "width": 16,
+      "height": 16,
+      "png_color_type": 2
+    },
+    {
+      "file": "favicon-16.svg",
+      "bytes": 575,
+      "sha256": "7c826b927b023229e28df0544f29fdae8c2c757f818f0db6b7f520b1997db795",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "file": "favicon-32.png",
+      "bytes": 663,
+      "sha256": "69cf90f8c19bb277da57b8e1edf5ee338092f36ce666f5168998c9f27b6726fc",
+      "width": 32,
+      "height": 32,
+      "png_color_type": 2
+    },
+    {
+      "file": "favicon-32.svg",
+      "bytes": 613,
+      "sha256": "5646afdb476db669ab530aa8ec9568798954827b25a97c1bbe1bf0ab63528074",
+      "viewBox": "0 0 32 32"
+    },
+    {
+      "file": "favicon-48.png",
+      "bytes": 920,
+      "sha256": "91d81d97b262d157bfc25441936e31d783dbcd0e660c6a024c52934bf32c3ed1",
+      "width": 48,
+      "height": 48,
+      "png_color_type": 2
+    },
+    {
+      "file": "favicon-48.svg",
+      "bytes": 622,
+      "sha256": "8573856ae9db0aa6dae08dee03a469b9a987a5b826379cab4a10280fea19ab15",
+      "viewBox": "0 0 48 48"
+    },
+    {
+      "file": "favicon.ico",
+      "bytes": 2090,
+      "sha256": "0b1425cc93d54a15f5ad968a28cc481a5376f527930c2a0e3a6a7fbf4ae43b4d"
+    },
+    {
+      "file": "favicon.png",
+      "bytes": 1192,
+      "sha256": "9c944c340a8e2c4b46450a383516b4fde87dd97e0762f74d26a71304761bbdf2",
+      "width": 64,
+      "height": 64,
+      "png_color_type": 2
+    },
+    {
+      "file": "favicon.svg",
+      "bytes": 622,
+      "sha256": "5a4d4f5b53e844639094586842e406fc416d61826de9e4e32929d3b3c879fee8",
+      "viewBox": "0 0 64 64"
+    },
+    {
+      "file": "mireqo-android-adaptive-foreground.png",
+      "bytes": 29119,
+      "sha256": "e22d054ad1f6fe12ccf23a5d43482fef87603913d5d940f38f96aa523fc154d1",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-android-adaptive-foreground.svg",
+      "bytes": 695,
+      "sha256": "a0f91e11f796c48dc1eb6801351a5e50e4044cfad3efb4a1d63fa535a98496bf",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-android-adaptive-monochrome.png",
+      "bytes": 26153,
+      "sha256": "bed91a1e39c68e7bacef4ed49332f1e1ea4e49e466c96f8b22c46bfa3a05618a",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-android-adaptive-monochrome.svg",
+      "bytes": 695,
+      "sha256": "7d6c027d50aeee54c2e0f536f927216c0083632ccfee42bf095ff12ae71f37f3",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-app-icon-dark.png",
+      "bytes": 28609,
+      "sha256": "cf69c71c9bb4713f3e94680ab64b8e4a4ddf4f8b8fa3882f296217d047ce7433",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 2
+    },
+    {
+      "file": "mireqo-app-icon-dark.svg",
+      "bytes": 771,
+      "sha256": "d611b08235fa0ca3e9b6324c7f46cbfdf27bfe48cb3572b80ee25491a40ab492",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-app-icon.png",
+      "bytes": 28600,
+      "sha256": "638bfc8ed4c3c17cf1355533a28b1c07f34599eb0363b52b10e3fee5a8cc8a17",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 2
+    },
+    {
+      "file": "mireqo-app-icon.svg",
+      "bytes": 771,
+      "sha256": "28fd648c67909820b12275777c0ac725618be5798e1caf9f8aef8a9c2e90b1d9",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-brand-preview.png",
+      "bytes": 72277,
+      "sha256": "ee2be6b8779bf36283ab444a74e139649b6bd6bd85112a3b5492baf996be55bd",
+      "width": 1200,
+      "height": 1150,
+      "png_color_type": 2
+    },
+    {
+      "file": "mireqo-brand-preview.svg",
+      "bytes": 15712,
+      "sha256": "e9f9b711b24ecab44a20fe7c5268ab61c2583c3a7aafb4b5b4dadbea6fafb124",
+      "viewBox": "0 0 1200 1150"
+    },
+    {
+      "file": "mireqo-logo-mono.png",
+      "bytes": 23348,
+      "sha256": "fb552dd82509adb75ae932782cc0e3c211c032f1f9984ca33d21e58b50a1d397",
+      "width": 960,
+      "height": 240,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-logo-mono.svg",
+      "bytes": 5609,
+      "sha256": "0e069584b4462d4fe654970c4a7a6993d00d025693dcf845762d43ba3eb02a08",
+      "viewBox": "0 0 960 240"
+    },
+    {
+      "file": "mireqo-logo-on-dark.png",
+      "bytes": 23932,
+      "sha256": "ca4b9b5863507b0dc01f64c08d7fb99457d68116a05492629153222a26b1bbac",
+      "width": 960,
+      "height": 240,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-logo-on-dark.svg",
+      "bytes": 5609,
+      "sha256": "525467c749c0cfa23d963ee29b2d0cc1bf74d017178111e54e1807d5d67da18f",
+      "viewBox": "0 0 960 240"
+    },
+    {
+      "file": "mireqo-logo-reverse.png",
+      "bytes": 18863,
+      "sha256": "c1d6a8e8701961161a8c201602c09dd9bef2e770f05b204aef1fbe34672762dd",
+      "width": 960,
+      "height": 240,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-logo-reverse.svg",
+      "bytes": 5609,
+      "sha256": "ae611df737c44c77df77079f43285aff18a7e0219c9c6a8b08261729a9f0bac0",
+      "viewBox": "0 0 960 240"
+    },
+    {
+      "file": "mireqo-logo.png",
+      "bytes": 23648,
+      "sha256": "f6b5758a185f0e60ed2d776b4c5daf1172fb1a58fb9513b9ce19adff5aa09568",
+      "width": 960,
+      "height": 240,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-logo.svg",
+      "bytes": 5609,
+      "sha256": "e5ddd56ec266f62279ec724f2052c7faf3a48be965553072bda20e1c4ea0ac1e",
+      "viewBox": "0 0 960 240"
+    },
+    {
+      "file": "mireqo-mark-mono.png",
+      "bytes": 34597,
+      "sha256": "072c020ae81a60eb87a1da4a763174b20c88f082d065189a9fd3d41b97997a03",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-mark-mono.svg",
+      "bytes": 604,
+      "sha256": "9465ff7553daa182f075383def03e56facb874ee81d4f97ea364c4b70d00cc96",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-mark-on-dark.png",
+      "bytes": 34963,
+      "sha256": "88295485970846d81be92d1cec41813d9841a549b422389d06093b114cf3d6b0",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-mark-on-dark.svg",
+      "bytes": 604,
+      "sha256": "e8f4d2b43850ab68d44e3b6062a3760e90d39007662e993c99fa109d83a72d37",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-mark.png",
+      "bytes": 35166,
+      "sha256": "8108f73c41b51d9fdbaa7ce706f16b2f3966d4285f8c1a4e1e43b71ca0953193",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-mark.svg",
+      "bytes": 604,
+      "sha256": "50a64b5be78d5bfd33d5bbe38c6441b9c0658e6c4f3e0d6c13001f644209a230",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-splash-dark.png",
+      "bytes": 31583,
+      "sha256": "cdd16a198aaa32bc7de47d91ee98c682c993703ac232ea5cdcaaf3d253dd048c",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-splash-dark.svg",
+      "bytes": 650,
+      "sha256": "3d6df23947b187a29286cf2d12d2e44eb42068744040588228a3a9f94c0efb0b",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-splash-light.png",
+      "bytes": 31767,
+      "sha256": "84a0cec8c3526a9b49416d800153f3603941dfc44a85cdc4d0f95f33a5f67168",
+      "width": 1024,
+      "height": 1024,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-splash-light.svg",
+      "bytes": 650,
+      "sha256": "d3a2b2cf8924612b8885bfda6f3b7052d85512c632f5694dd6bf41f167b929e8",
+      "viewBox": "0 0 1024 1024"
+    },
+    {
+      "file": "mireqo-wordmark-mono.png",
+      "bytes": 20085,
+      "sha256": "12b0ce1603702afc9f6fee4c7587ba54a92e275fc6151e965489a9b36b74dcb0",
+      "width": 760,
+      "height": 256,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-wordmark-mono.svg",
+      "bytes": 5114,
+      "sha256": "0bb96c9ec45a7ff7f75aa3c8182e5e8be77aca07151abf3d668adc1055435ef1",
+      "viewBox": "0 0 760 256"
+    },
+    {
+      "file": "mireqo-wordmark-on-dark.png",
+      "bytes": 20603,
+      "sha256": "49c4b5d60d503a81534594bdde883f642bb9ebed798670530079811ece027229",
+      "width": 760,
+      "height": 256,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-wordmark-on-dark.svg",
+      "bytes": 5114,
+      "sha256": "afcdff1e96a227d249f7b07ebedc3907e1905a0c70a55d0854e75b9fa93edd2f",
+      "viewBox": "0 0 760 256"
+    },
+    {
+      "file": "mireqo-wordmark-reverse.png",
+      "bytes": 16337,
+      "sha256": "b2c97d9d5d2f1d094db3bd76681d4a7963bc1c141bb9eb754f090baa96828815",
+      "width": 760,
+      "height": 256,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-wordmark-reverse.svg",
+      "bytes": 5114,
+      "sha256": "4c4ed4898da17b825ff7a33b5155a02be69bc1808bbf60ac7dfc3e995e752c59",
+      "viewBox": "0 0 760 256"
+    },
+    {
+      "file": "mireqo-wordmark.png",
+      "bytes": 20085,
+      "sha256": "12b0ce1603702afc9f6fee4c7587ba54a92e275fc6151e965489a9b36b74dcb0",
+      "width": 760,
+      "height": 256,
+      "png_color_type": 6
+    },
+    {
+      "file": "mireqo-wordmark.svg",
+      "bytes": 5114,
+      "sha256": "0bb96c9ec45a7ff7f75aa3c8182e5e8be77aca07151abf3d668adc1055435ef1",
+      "viewBox": "0 0 760 256"
+    },
+    {
+      "file": "site.webmanifest",
+      "bytes": 588,
+      "sha256": "b22257e7ac8bf92b9e25132bdfe762c514de98cce61fb068044ff1151516e4a9"
+    },
+    {
+      "file": "web-icon-192.png",
+      "bytes": 3246,
+      "sha256": "ec797bfc6f442f4c7298f1ea1bce8a33acdeb26cc3f45680c45fa38f98d6fe87",
+      "width": 192,
+      "height": 192,
+      "png_color_type": 2
+    },
+    {
+      "file": "web-icon-192.svg",
+      "bytes": 694,
+      "sha256": "4080c48c74d84b52edaacfe7dec7d7126dc9bd05c519be6474b8f64ac8709a1d",
+      "viewBox": "0 0 192 192"
+    },
+    {
+      "file": "web-icon-512.png",
+      "bytes": 10839,
+      "sha256": "b6581dbf89bb771982639748dd81d2abc92a870742660870e7040ec80d69442e",
+      "width": 512,
+      "height": 512,
+      "png_color_type": 2
+    },
+    {
+      "file": "web-icon-512.svg",
+      "bytes": 762,
+      "sha256": "f75535d69d295f17e6e861a5919836544e956ffce88d48fd47241ffda4aac031",
+      "viewBox": "0 0 512 512"
+    },
+    {
+      "file": "web-maskable-512.png",
+      "bytes": 10644,
+      "sha256": "19deca6cc2c51e1db532704de80f43f3cc596b360c6f3f4f7bc7fb99ae04e1ca",
+      "width": 512,
+      "height": 512,
+      "png_color_type": 2
+    },
+    {
+      "file": "web-maskable-512.svg",
+      "bytes": 689,
+      "sha256": "c474b07a8939165d60efceee61215c1ee8b483b8daf75c323345b07e3d12e55f",
+      "viewBox": "0 0 512 512"
+    }
+  ]
+}

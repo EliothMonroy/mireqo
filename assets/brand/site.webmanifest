@@ -1,0 +1,27 @@
+{
+  "name": "Mireqo",
+  "short_name": "Mireqo",
+  "description": "Discover local events and save the ones you want to come back to.",
+  "theme_color": "#93442C",
+  "background_color": "#F7F3EB",
+  "icons": [
+    {
+      "src": "web-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "web-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "web-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
