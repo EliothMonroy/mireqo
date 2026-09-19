@@ -1,0 +1,13 @@
+Light: tester-loading-light-verified.xcresult summary reports 1 passed, 0 failed.
+Dark/enlarged: tester-loading-dark-large-verified.xcresult summary reports 1 passed, 0 failed.
+MIREQO_LOADING_MODE context
+MIREQO_SHOT ios-loading-context
+MIREQO_LOADING_MODE preview
+MIREQO_SHOT ios-loading-preview
+MIREQO_LOADING_MODE list
+MIREQO_SHOT ios-loading-list
+MIREQO_SHOT ios-loading-resolved
+MIREQO_LOADING_PASS context,preview,list placeholders and real-content transitions
+	 Executed 1 test, with 0 failures (0 unexpected) in 44.096 (44.097) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 44.096 (44.097) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 44.096 (44.098) seconds

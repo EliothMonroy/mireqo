@@ -22,11 +22,11 @@ export async function verifyCatalog(db: Kysely<Database>, url: string) {
     await db.selectFrom('catalog_events').selectAll().orderBy('id').execute(),
     before,
   );
-  assert.equal(before.length, 30);
+  assert.equal(before.length, 198);
   assert.equal(
     (await db.selectFrom('catalog_source_records').selectAll().execute())
       .length,
-    30,
+    198,
   );
   const app = await createApp(async () => {}, false, createCatalog(db, true));
   try {
@@ -48,8 +48,8 @@ export async function verifyCatalog(db: Kysely<Database>, url: string) {
         cursor = page.nextCursor;
         if (cursor) stale.push(cursor);
       } while (cursor);
-      assert.equal(ids.length, 10);
-      assert.equal(new Set(ids).size, 10);
+      assert.equal(ids.length, 66);
+      assert.equal(new Set(ids).size, 66);
       assert.deepEqual(
         ids,
         before

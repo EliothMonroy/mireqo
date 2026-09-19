@@ -8,7 +8,10 @@ export class CatalogError extends Error {
     super(message);
   }
 }
-async function request(path: string, signal?: AbortSignal): Promise<unknown> {
+export async function request(
+  path: string,
+  signal?: AbortSignal,
+): Promise<unknown> {
   const response = await fetch(`${apiUrl.replace(/\/$/, '')}${path}`, {
     signal,
   });

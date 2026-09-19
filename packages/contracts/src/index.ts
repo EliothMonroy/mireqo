@@ -21,3 +21,5 @@ export function parseHealth(value: unknown): Health {
   return value;
 }
 export * from './catalog.ts';
+
+export * from './discovery.ts';

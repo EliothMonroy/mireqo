@@ -74,3 +74,40 @@ test('configuration and destructive test-target guard reject unsafe input', () =
   ])
     assert.throws(() => config(env));
 });
+
+test('relative calendar ranges use selected-area dates and calendar boundaries', async () => {
+  const { dateRange, localDate } = await import('../src/discovery-date.ts');
+  assert.equal(
+    localDate(new Date('2026-09-19T05:59:59.999Z'), 'America/Mexico_City'),
+    '2026-09-18',
+  );
+  assert.equal(
+    localDate(new Date('2026-09-19T06:00:00.000Z'), 'America/Mexico_City'),
+    '2026-09-19',
+  );
+  for (const [date, start, end] of [
+    ['2026-09-14', '2026-09-19', '2026-09-20'],
+    ['2026-09-18', '2026-09-19', '2026-09-20'],
+    ['2026-09-19', '2026-09-19', '2026-09-20'],
+    ['2026-09-20', '2026-09-20', '2026-09-20'],
+    ['2026-12-31', '2027-01-02', '2027-01-03'],
+  ] as const)
+    assert.deepEqual(dateRange(date, 'weekend'), { start, end });
+  assert.deepEqual(dateRange('2024-02-28', 'tomorrow'), {
+    start: '2024-02-29',
+    end: '2024-02-29',
+  });
+  assert.deepEqual(dateRange('2024-02-29', 'tomorrow'), {
+    start: '2024-03-01',
+    end: '2024-03-01',
+  });
+  assert.deepEqual(dateRange('2026-12-31', 'week'), {
+    start: '2026-12-31',
+    end: '2027-01-03',
+  });
+  assert.deepEqual(dateRange('2026-09-20', 'week'), {
+    start: '2026-09-20',
+    end: '2026-09-20',
+  });
+  assert.equal(dateRange('2026-09-18', 'default'), null);
+});

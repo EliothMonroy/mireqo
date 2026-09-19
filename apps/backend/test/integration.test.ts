@@ -1,3 +1,4 @@
+import { verifyDiscovery } from './discovery-integration.ts';
 import { verifyCatalog } from './catalog-integration.ts';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -48,6 +49,7 @@ test('real PostGIS, migrations, isolation, imports and process-loss recovery', a
       (await db.selectFrom('fixture_state').selectAll().execute()).length,
       1,
     );
+    await verifyDiscovery(db, url);
     await verifyCatalog(db, url);
     const spatial = await sql<{
       distance: number;

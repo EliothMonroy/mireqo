@@ -1,89 +1,50 @@
 import {
-  ActivityIndicator,
-  FlatList,
   Pressable,
   RefreshControl,
+  ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import type { DiscoverData } from '../../data/discover';
-import {
-  formatPrice,
-  formatReferenceDate,
-  formatSchedule,
-} from '../../domain/event-format';
-import { Action } from '../../ui/Action';
-import { EventCard } from '../../ui/EventCard';
+import type { DiscoverySession } from '../../data/discovery-session';
+import type { DiscoveryScope } from '../../data/discovery-catalog';
+import { categories, collections } from '../../domain/discovery-filters';
+import { formatReferenceDate } from '../../domain/event-format';
 import { useTheme } from '../../ui/theme';
+import {
+  DateChoices,
+  EventCardPlaceholders,
+  Notice,
+  discoveryStyles as styles,
+} from './DiscoveryParts';
+import { DiscoverySection } from './DiscoverySection';
 export function DiscoverScreen({
   data,
   onChangeArea,
+  onOpen,
 }: {
-  data: DiscoverData;
+  data: DiscoverySession;
   onChangeArea: () => void;
+  onOpen: (scope: DiscoveryScope) => void;
 }) {
   const theme = useTheme();
-  const hasContent = data.events.length > 0;
+  const context = data.context;
+  const scope: DiscoveryScope | null =
+    data.selectedArea && context
+      ? {
+          areaId: data.selectedArea.id,
+          context: context.context.token,
+          date: data.date,
+        }
+      : null;
   return (
     <SafeAreaView
       style={[styles.screen, { backgroundColor: theme.background }]}
     >
-      <View style={[styles.header, { borderBottomColor: theme.border }]}>
-        <View style={styles.headerRow}>
-          <Text
-            maxFontSizeMultiplier={1.6}
-            style={[styles.brand, { color: theme.accent }]}
-          >
-            MIREQO
-          </Text>
-          <Text
-            maxFontSizeMultiplier={1.6}
-            style={[styles.edition, { color: theme.muted }]}
-          >
-            A little closer to what’s on.
-          </Text>
-        </View>
-        <Text
-          accessibilityRole="header"
-          maxFontSizeMultiplier={1.6}
-          style={[styles.title, { color: theme.text }]}
-        >
-          Discover
-        </Text>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Change area, currently ${data.selectedArea?.name}`}
-          onPress={onChangeArea}
-          style={({ pressed }) => [
-            styles.location,
-            { backgroundColor: theme.accentSoft, opacity: pressed ? 0.7 : 1 },
-          ]}
-        >
-          <Text style={[styles.locationText, { color: theme.text }]}>
-            {data.selectedArea?.name}
-          </Text>
-          <Text
-            accessible={false}
-            style={{ color: theme.accent, fontSize: 20 }}
-          >
-            ⌄
-          </Text>
-        </Pressable>
-      </View>
-      <FlatList
-        key={data.selectedArea?.id}
-        data={data.events}
-        keyExtractor={(event) => event.id}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <EventCard
-            event={item}
-            schedule={formatSchedule(item.schedule)}
-            price={formatPrice(item.price)}
-          />
-        )}
+      <ScrollView
+        key={`${data.selectedArea?.id}:${data.date}`}
+        contentContainerStyle={styles.content}
         refreshControl={
           <RefreshControl
             refreshing={data.refreshing}
@@ -92,242 +53,150 @@ export function DiscoverScreen({
             colors={[theme.accent]}
           />
         }
-        ListHeaderComponent={
-          <View>
-            <View style={[styles.demo, { borderColor: theme.border }]}>
-              <View style={styles.demoHeading}>
-                <View style={[styles.dot, { backgroundColor: theme.accent }]} />
-                <Text style={[styles.demoTitle, { color: theme.text }]}>
-                  Demo events
-                </Text>
-              </View>
-              <Text style={[styles.demoText, { color: theme.muted }]}>
-                Imagined events. Real possibilities to explore.
-                {data.demo
-                  ? ` Sample catalog: ${formatReferenceDate(data.demo.referenceDate)}.`
-                  : ''}{' '}
-                These are not real listings.
-              </Text>
-            </View>
-            {data.persistenceError && (
-              <Notice
-                message={data.persistenceError}
-                label="Retry saving area"
-                onPress={data.retryPersistence}
-              />
-            )}
-            {data.isOffline && (
-              <Notice
-                message={
-                  hasContent
-                    ? 'You’re offline. Showing events loaded earlier in this session.'
-                    : 'You’re offline. Connect to load demonstration events.'
-                }
-              />
-            )}
-            {data.error && (
-              <Notice
-                message={
-                  hasContent
-                    ? `Showing previously loaded events. ${data.error}`
-                    : data.error
-                }
-                label="Try again"
-                onPress={data.refresh}
-              />
-            )}
-            <View style={styles.sectionHeading}>
-              <Text
-                accessibilityRole="header"
-                style={[styles.sectionTitle, { color: theme.text }]}
-              >
-                A change of pace
-              </Text>
-              <Text style={[styles.sectionMeta, { color: theme.muted }]}>
-                IN YOUR AREA
-              </Text>
-            </View>
-          </View>
-        }
-        ListEmptyComponent={
-          data.initialLoading ? (
-            <View
-              accessibilityLabel="Loading events"
-              accessibilityRole="progressbar"
+      >
+        <Text style={[local.brand, { color: theme.accent }]}>MIREQO</Text>
+        <Text
+          accessibilityRole="header"
+          maxFontSizeMultiplier={1.6}
+          style={[styles.title, { color: theme.text }]}
+        >
+          Discover
+        </Text>
+        <Text style={[styles.copy, { color: theme.muted, marginVertical: 8 }]}>
+          A little closer to what’s on.
+        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Change area, currently ${data.selectedArea?.name}`}
+          onPress={onChangeArea}
+          style={[local.location, { backgroundColor: theme.accentSoft }]}
+        >
+          <Text style={[local.locationText, { color: theme.text }]}>
+            {data.selectedArea?.name} ⌄
+          </Text>
+        </Pressable>
+        <DateChoices value={data.date} onChange={data.setDate} />
+        {data.persistenceError && (
+          <Notice
+            message={data.persistenceError}
+            label="Retry saving area"
+            onPress={data.retryPersistence}
+          />
+        )}
+        {data.isOffline && (
+          <Notice message="You’re offline. Previously loaded events remain available in this session." />
+        )}
+        {data.contextError && (
+          <Notice
+            message={`${context ? `Showing the browsing snapshot from ${context.context.localDate}. ` : ''}${data.contextError}`}
+            label="Try again"
+            onPress={data.refresh}
+          />
+        )}
+        <View style={[local.demo, { borderColor: theme.border }]}>
+          <Text style={[local.demoTitle, { color: theme.text }]}>
+            Demo events
+          </Text>
+          <Text style={[styles.copy, { color: theme.muted }]}>
+            These are imagined events, not real listings.
+            {context
+              ? ` Sample catalog: ${formatReferenceDate(context.demo.referenceDate)}.`
+              : ''}
+          </Text>
+        </View>
+        <Text
+          accessibilityRole="header"
+          style={[styles.heading, { color: theme.text, marginTop: 24 }]}
+        >
+          Find your kind of day
+        </Text>
+        <View style={local.categories}>
+          {categories.map((category) => (
+            <Pressable
+              key={category.id}
+              accessibilityRole="button"
+              accessibilityLabel={`Browse ${category.label}`}
+              accessibilityState={{ disabled: !scope }}
+              disabled={!scope}
+              onPress={() =>
+                scope && onOpen({ ...scope, category: category.id })
+              }
+              style={[
+                local.category,
+                { borderColor: theme.border, backgroundColor: theme.surface },
+              ]}
             >
-              {[0, 1].map((key) => (
-                <View
-                  key={key}
-                  style={[
-                    styles.skeleton,
-                    {
-                      backgroundColor: theme.surface,
-                      borderColor: theme.border,
-                    },
-                  ]}
-                >
-                  <View
-                    style={[
-                      styles.skeletonImage,
-                      { backgroundColor: theme.imageFallback },
-                    ]}
-                  />
-                  <View
-                    style={[
-                      styles.skeletonLine,
-                      { backgroundColor: theme.border },
-                    ]}
-                  />
-                  <View
-                    style={[
-                      styles.skeletonLine,
-                      { width: '45%', backgroundColor: theme.border },
-                    ]}
-                  />
-                </View>
+              <Text
+                style={{ color: theme.text, fontWeight: '600', fontSize: 15 }}
+              >
+                {category.label} ↗
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        {data.contextLoading && (
+          <EventCardPlaceholders label="Preparing discovery" />
+        )}
+        {scope && (
+          <View key={`${scope.areaId}:${scope.date}`}>
+            <DiscoverySection
+              scope={scope}
+              title={
+                data.date === 'default' ? 'All upcoming events' : 'All events'
+              }
+              general
+              onOpen={onOpen}
+              onRestart={data.refresh}
+              onEmptyRecovery={
+                data.date === 'default'
+                  ? onChangeArea
+                  : () => data.setDate('default')
+              }
+            />
+            {collections
+              .filter(
+                (collection) =>
+                  data.date === 'default' ||
+                  (collection.id !== 'today' && collection.id !== 'weekend'),
+              )
+              .map((collection) => (
+                <DiscoverySection
+                  key={collection.id}
+                  scope={{ ...scope, collection: collection.id }}
+                  title={collection.label}
+                  onOpen={onOpen}
+                  onRestart={data.refresh}
+                  onEmptyRecovery={onChangeArea}
+                />
               ))}
-            </View>
-          ) : !data.error && !data.isOffline ? (
-            <View style={styles.empty}>
-              <Text style={[styles.emptyTitle, { color: theme.text }]}>
-                A quiet corner, for now.
-              </Text>
-              <Text style={[styles.emptyText, { color: theme.muted }]}>
-                There are no demo events in this area. Explore another place or
-                check again.
-              </Text>
-              <Action label="Change area" onPress={onChangeArea} />
-              <Action secondary label="Refresh events" onPress={data.refresh} />
-            </View>
-          ) : null
-        }
-        ListFooterComponent={
-          <View style={styles.footer}>
-            {data.loadingMore ? (
-              <ActivityIndicator
-                accessibilityLabel="Loading more events"
-                color={theme.accent}
-              />
-            ) : data.paginationError ? (
-              <Notice
-                message={data.paginationError}
-                label="Retry loading more"
-                onPress={data.loadMore}
-              />
-            ) : data.hasMore ? (
-              <Action
-                secondary
-                label="Explore more events"
-                onPress={data.loadMore}
-              />
-            ) : hasContent ? (
-              <Text style={[styles.end, { color: theme.muted }]}>
-                You’ve explored this area’s demo events.
-              </Text>
-            ) : null}
-            {hasContent && (
-              <Action secondary label="Refresh events" onPress={data.refresh} />
-            )}
           </View>
-        }
-      />
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
-function Notice({
-  message,
-  label,
-  onPress,
-}: {
-  message: string;
-  label?: string;
-  onPress?: () => void;
-}) {
-  const theme = useTheme();
-  return (
-    <View
-      accessibilityLiveRegion="polite"
-      style={[styles.notice, { backgroundColor: theme.accentSoft }]}
-    >
-      <Text style={[styles.noticeText, { color: theme.text }]}>{message}</Text>
-      {label && onPress && <Action secondary label={label} onPress={onPress} />}
-    </View>
-  );
-}
-const styles = StyleSheet.create({
-  screen: { flex: 1 },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    paddingBottom: 18,
-    borderBottomWidth: 1,
-    width: '100%',
-    maxWidth: 680,
-    alignSelf: 'center',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+const local = StyleSheet.create({
+  brand: {
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 2.5,
     marginBottom: 16,
   },
-  brand: { fontSize: 12, fontWeight: '800', letterSpacing: 2.5 },
-  edition: { fontSize: 11 },
-  title: {
-    fontSize: 36,
-    fontWeight: '600',
-    letterSpacing: -1.3,
-    marginBottom: 12,
+  location: { minHeight: 48, padding: 14, borderRadius: 16, marginTop: 12 },
+  locationText: { fontSize: 18, fontWeight: '600' },
+  demo: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    paddingVertical: 16,
+    gap: 6,
   },
-  location: {
-    flexDirection: 'row',
-    gap: 16,
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 11,
-    paddingHorizontal: 16,
+  demoTitle: { fontSize: 14, fontWeight: '700' },
+  categories: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 14 },
+  category: {
     minHeight: 48,
     borderRadius: 16,
-    maxWidth: '100%',
-  },
-  locationText: { fontSize: 16, fontWeight: '600', flexShrink: 1 },
-  list: {
-    paddingHorizontal: 24,
-    paddingBottom: 28,
-    width: '100%',
-    maxWidth: 680,
-    alignSelf: 'center',
-  },
-  demo: { paddingVertical: 20, gap: 8, borderBottomWidth: 1, marginBottom: 24 },
-  demoHeading: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  dot: { width: 6, height: 6, borderRadius: 3 },
-  demoTitle: { fontSize: 13, fontWeight: '700' },
-  demoText: { fontSize: 12, lineHeight: 19 },
-  sectionHeading: { marginBottom: 18, gap: 6 },
-  sectionTitle: { fontSize: 23, fontWeight: '500', letterSpacing: -0.4 },
-  sectionMeta: { fontSize: 10, letterSpacing: 1.5, fontWeight: '600' },
-  notice: { padding: 16, borderRadius: 16, marginBottom: 18, gap: 12 },
-  noticeText: { fontSize: 14, lineHeight: 22 },
-  empty: { paddingVertical: 32, gap: 18 },
-  emptyTitle: { fontSize: 25, fontWeight: '600' },
-  emptyText: { fontSize: 16, lineHeight: 25 },
-  skeleton: {
     borderWidth: 1,
-    borderRadius: 24,
-    overflow: 'hidden',
-    marginBottom: 24,
-    paddingBottom: 24,
+    padding: 14,
+    justifyContent: 'center',
   },
-  skeletonImage: { height: 200, marginBottom: 24 },
-  skeletonLine: {
-    height: 16,
-    width: '75%',
-    marginHorizontal: 24,
-    marginBottom: 16,
-    borderRadius: 5,
-  },
-  footer: { paddingTop: 4, gap: 16 },
-  end: { fontSize: 13, lineHeight: 20, textAlign: 'center', padding: 16 },
 });

@@ -1,0 +1,86 @@
+$ pnpm run build && pnpm run lint && pnpm run typecheck && pnpm run format:check && pnpm run test
+$ pnpm --filter @mireqo/contracts build && pnpm --filter @mireqo/backend build
+$ tsc
+$ tsc
+$ eslint scripts --config apps/mobile/eslint.config.cjs && pnpm -r --if-present lint
+Warning: React version was set to "detect" in eslint-plugin-react settings, but the "react" package is not installed. Assuming latest React version for linting.
+apps/mobile lint$ eslint .
+apps/backend lint$ eslint src test
+apps/backend lint: Done
+apps/mobile lint: Done
+$ pnpm -r --if-present typecheck
+packages/contracts typecheck$ tsc --noEmit
+packages/contracts typecheck: Done
+apps/backend typecheck$ tsc --noEmit
+apps/mobile typecheck$ tsc --noEmit
+apps/backend typecheck: Done
+apps/mobile typecheck: Done
+$ prettier --check .
+Checking formatting...
+All matched files use Prettier code style!
+$ node --test scripts/*.test.mjs && pnpm -r --if-present test
+Warning: React version was set to "detect" in eslint-plugin-react settings, but the "react" package is not installed. Assuming latest React version for linting.
+✔ blocks cross-feature imports including relative paths and re-exports (560.665667ms)
+✔ keeps shared UI independent from data and domain independent from native APIs (8.718667ms)
+✔ permits routes to compose features and features to use shared UI (5.269875ms)
+✔ reports ready groups independently with compatible prerequisites (0.433459ms)
+✔ missing native tools do not make JavaScript readiness fail (0.552667ms)
+✔ detects mismatched Node, pnpm and Xcode versions (0.104292ms)
+✔ honors configured Android SDK without overwriting unrelated environment (0.359ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 693.170958
+Scope: 3 of 4 workspace projects
+packages/contracts test$ node --test src/*.test.ts
+packages/contracts test: ✔ catalog parsers reject impossible dates, dishonest price ranges, membership and unexpected fields (3.293917ms)
+packages/contracts test: ✔ additive discovery schemas preserve legacy strictness and validate effective context (13.012417ms)
+packages/contracts test: ✔ health contract validates external data (1.4045ms)
+packages/contracts test: ℹ tests 3
+packages/contracts test: ℹ suites 0
+packages/contracts test: ℹ pass 3
+packages/contracts test: ℹ fail 0
+packages/contracts test: ℹ cancelled 0
+packages/contracts test: ℹ skipped 0
+packages/contracts test: ℹ todo 0
+packages/contracts test: ℹ duration_ms 162.115459
+packages/contracts test: Done
+apps/mobile test$ jest --runInBand
+apps/backend test$ node --test test/unit.test.ts
+apps/backend test: (node:39496) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+apps/backend test: (Use `node --trace-warnings ...` to show where the warning was created)
+apps/backend test: ✔ API schemas, errors, docs and database-independent liveness (134.367833ms)
+apps/backend test: ✔ configuration and destructive test-target guard reject unsafe input (0.444958ms)
+apps/backend test: ✔ relative calendar ranges use selected-area dates and calendar boundaries (8.714416ms)
+apps/backend test: ℹ tests 3
+apps/backend test: ℹ suites 0
+apps/backend test: ℹ pass 3
+apps/backend test: ℹ fail 0
+apps/backend test: ℹ cancelled 0
+apps/backend test: ℹ skipped 0
+apps/backend test: ℹ todo 0
+apps/backend test: ℹ duration_ms 519.524833
+apps/backend test: Done
+apps/mobile test: PASS src/data/discovery-session.test.tsx
+apps/mobile test: PASS src/data/discovery-results.test.tsx
+apps/mobile test: PASS src/features/discover/DiscoverySection.test.tsx
+apps/mobile test: PASS src/features/discover/DiscoverScreen.test.tsx
+apps/mobile test: PASS src/data/discovery-catalog.test.ts
+apps/mobile test: PASS src/features/foundation/FoundationScreen.test.tsx
+apps/mobile test: PASS src/data/area-preference.test.ts
+apps/mobile test: PASS src/data/catalog.test.ts
+apps/mobile test: PASS src/data/health.test.ts
+apps/mobile test: PASS src/data/area-sqlite.test.ts
+apps/mobile test: PASS src/domain/event-format.test.ts
+apps/mobile test: PASS src/domain/discovery-filters.test.ts
+apps/mobile test:
+apps/mobile test: Test Suites: 12 passed, 12 total
+apps/mobile test: Tests:       37 passed, 37 total
+apps/mobile test: Snapshots:   0 total
+apps/mobile test: Time:        2.88 s, estimated 4 s
+apps/mobile test: Ran all test suites.
+apps/mobile test: Done

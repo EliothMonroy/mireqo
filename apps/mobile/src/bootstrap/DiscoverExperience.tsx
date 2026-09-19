@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
-import { useDiscoverData } from '../data/discover';
+import { useRouter } from 'expo-router';
+import { useDiscoverySession } from '../data/discovery-session';
 import { DiscoverScreen } from '../features/discover/DiscoverScreen';
 import { LocationSelector } from '../features/location/LocationSelector';
 import { useTheme } from '../ui/theme';
 export function DiscoverExperience() {
-  const data = useDiscoverData();
+  const data = useDiscoverySession();
+  const router = useRouter();
   const theme = useTheme();
   const [choosingArea, setChoosingArea] = useState(false);
   if (data.hydrating)
@@ -36,7 +38,13 @@ export function DiscoverExperience() {
   if (!data.selectedArea) return selector;
   return (
     <>
-      <DiscoverScreen data={data} onChangeArea={() => setChoosingArea(true)} />
+      <DiscoverScreen
+        data={data}
+        onChangeArea={() => setChoosingArea(true)}
+        onOpen={(scope) =>
+          router.push({ pathname: '/events', params: { ...scope } })
+        }
+      />
       <Modal
         visible={choosingArea}
         animationType="slide"

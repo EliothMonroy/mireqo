@@ -1,0 +1,61 @@
+
+RESULT flow-final
+Test Case '-[MireqoCheck.Check testDiscovery]' started.
+MIREQO_SHOT ios-default-light
+MIREQO_SHOT ios-date-today
+MIREQO_SHOT ios-date-tomorrow
+MIREQO_SHOT ios-date-this-weekend
+MIREQO_SHOT ios-date-this-week
+MIREQO_SHOT ios-area-retains-date
+MIREQO_SHOT ios-music-tomorrow
+MIREQO_SHOT ios-parent-before-list
+MIREQO_SHOT ios-list-page-one-footer
+MIREQO_SHOT ios-list-page-two
+MIREQO_SHOT ios-parent-restored
+MIREQO_FLOW_PASS all dates; all areas retain date; category+date; edge-swipe back; SeeAll pagination; parent scroll restored
+Test Case '-[MireqoCheck.Check testDiscovery]' passed (53.851 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 53.851 (53.853) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 53.851 (53.853) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 53.851 (53.854) seconds
+** TEST EXECUTE SUCCEEDED **
+
+RESULT dark-large
+Test Case '-[MireqoCheck.Check testDarkLarge]' started.
+MIREQO_SHOT ios-dark-large-dates
+MIREQO_SHOT ios-dark-large-category
+MIREQO_DARK_LARGE_PASS
+Test Case '-[MireqoCheck.Check testDarkLarge]' passed (13.834 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.834 (13.835) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.834 (13.835) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 13.834 (13.836) seconds
+** TEST SUCCEEDED **
+
+RESULT relaunch
+Test Case '-[MireqoCheck.Check testRelaunch]' started.
+MIREQO_SHOT ios-relaunch-default-area
+MIREQO_RELAUNCH_PASS
+Test Case '-[MireqoCheck.Check testRelaunch]' passed (9.272 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 9.272 (9.273) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 9.272 (9.273) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 9.272 (9.274) seconds
+** TEST SUCCEEDED **
+
+RESULT recovery-pass
+Test Case '-[MireqoCheck.Check testCachedRefresh]' started.
+MIREQO_SHOT ios-refresh-error
+MIREQO_SHOT ios-refresh-recovered
+MIREQO_CACHED_REFRESH_PASS
+Test Case '-[MireqoCheck.Check testCachedRefresh]' passed (14.711 seconds).
+Test Case '-[MireqoCheck.Check testFaultRecovery]' started.
+MIREQO_SHOT ios-partial-error
+MIREQO_SHOT ios-partial-recovered
+MIREQO_SHOT ios-empty
+MIREQO_SHOT ios-empty-recovered
+MIREQO_SHOT ios-pagination-error
+MIREQO_SHOT ios-pagination-recovered
+MIREQO_FAULT_PASS partial,empty,pagination,recoveries
+Test Case '-[MireqoCheck.Check testFaultRecovery]' passed (44.552 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 59.264 (59.265) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 59.264 (59.266) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 59.264 (59.267) seconds
+** TEST SUCCEEDED **

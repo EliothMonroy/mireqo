@@ -156,10 +156,18 @@ Validate upgrades against the pinned SDK's compatibility data and repeat the rel
 After `pnpm build` and `pnpm db:migrate`, explicitly seed the catalog and start the API:
 
 ```sh
-mise exec -- pnpm db:seed:demo 2026-09-07
+mise exec -- pnpm db:seed:demo 2026-09-18
 mise exec -- pnpm api
 ```
 
 The optional ISO reference date makes fixtures reproducible. Omitting it uses the Mexico City local date at this explicit invocation. API reads never reseed or move dates. Same-date reseeding preserves stable identities/content; changing the date invalidates old cursors so mobile can refresh. Only allowlisted loopback development54329 and test54330 database identities are accepted, with `NODE_ENV` other than production. Catalog routes return503 on other/production configurations. These are synthetic demonstration events, never production/live listings.
 
 TanStack Query5.102.8, Expo SQLite57.0.2 and Expo Network57.0.1 are exactly pinned; SQLite/network versions match Expo57.0.20 bundled compatibility data. Rebuild both native apps after installing these additions. AppState focus and native connectivity are wired centrally; an HTTP failure alone never claims device offline. SQLite uses `mireqo.db` with a namespaced versioned migration and selected-area preference; catalog content persists only for the session. Artwork origins and native verification are recorded in [feature implementation](plans/discover-area-browsing/implementation.md) and [artwork notes](plans/discover-area-browsing/artwork.md).
+
+### Discover collections and date-filter development
+
+Stage 2 adds `/v1/discovery/context?areaId=coacalco` and `/v1/discovery/events?areaId=coacalco&context=<token>&date=default`. Discovery events accept optional category or collection, plus limit/cursor. Context responses provide the backend reference instant/local date and expiry; obtain one context and reuse it for all section/list calls in a browsing generation. Date values are `default`, `today`, `tomorrow`, `weekend` and `week`; initial categories are `music`, `market`, `art`, `outdoors`; collections are `today`, `weekend`, `free`, `music`. Category and collection are exclusive, and temporal collections require default date. The legacy `/v1/events` endpoint remains unchanged. Generated OpenAPI documents both interfaces.
+
+The explicit demo seed now creates 198 records (66 per area) spanning a 14-day horizon, plus the original schedule/price/status variants. Reseed explicitly with a suitable reference date for native relative-date testing; old fixture dates do not roll with API reads. A refreshed context is required after reseeding or restarting the API, or after 24 hours. Mobile provides recovery while retaining loaded same-context content. Existing workspace install and native binaries remain compatible because this slice adds no dependency or native configuration changes.
+
+`pnpm check` includes mobile session/filter/section/navigation-context tests and deterministic backend calendar/contract checks. `pnpm test:integration` also covers actual PostgreSQL combined filtering before pagination, context-bound cursors, exact/day/undated eligibility, expiry/clock changes, stable preview-to-list ordering, legacy compatibility and existing operational safeguards. See [implementation evidence](plans/discover-collections/implementation.md) for the native verification performed for this change.

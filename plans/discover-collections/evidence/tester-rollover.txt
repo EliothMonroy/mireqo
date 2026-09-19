@@ -1,0 +1,13 @@
+$ jest --runInBand --runTestsByPath src/data/discovery-session.test.tsx
+PASS src/data/discovery-session.test.tsx
+  ✓ date survives area change, old area completion cannot cross identities, only area is persisted (111 ms)
+  ✓ failed clock refresh preserves previous context with explicit error and retry replaces it (157 ms)
+  ✓ unknown stored area prompts selection, and session starts with default date (53 ms)
+  ✓ app foreground renews server time without changing the selected date (103 ms)
+  ✓ selected-area midnight renews relative dates without clearing the date choice (5 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        1.318 s, estimated 2 s
+Ran all test suites within paths "src/data/discovery-session.test.tsx".

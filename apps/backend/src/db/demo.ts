@@ -61,7 +61,7 @@ export async function seedDemo(
     );
   if (!validDate(referenceDate))
     throw new Error('Reference date must be a valid ISO calendar date');
-  const version = `demo-v1:${referenceDate}`;
+  const version = `demo-v2:${referenceDate}`;
   await db.transaction().execute(async (trx) => {
     for (const area of demoAreas) {
       const row = {
@@ -79,9 +79,12 @@ export async function seedDemo(
         .values(row)
         .onConflict((oc) => oc.column('id').doUpdateSet(row))
         .execute();
-      for (let index = 0; index < titles.length; index++) {
+      for (let index = 0; index < 66; index++) {
         const day = new Date(`${referenceDate}T00:00:00Z`);
-        day.setUTCDate(day.getUTCDate() + Math.floor(index / 2));
+        day.setUTCDate(
+          day.getUTCDate() +
+            (index < 10 ? Math.floor(index / 2) : Math.floor((index - 10) / 4)),
+        );
         const date = day.toISOString().slice(0, 10);
         const id = `demo:${area.id}:${String(index + 1).padStart(2, '0')}`;
         const prices: EventSummary['price'][] = [
@@ -93,7 +96,10 @@ export async function seedDemo(
         ];
         const event: EventSummary = {
           id,
-          title: titles[index]!,
+          title:
+            index < 10
+              ? titles[index]!
+              : `${['Music in the courtyard', 'Neighborhood makers market', 'Open studio afternoon', 'Community garden walk'][(index - 10) % 4]} · Demo day ${Math.floor((index - 10) / 4) + 1}`,
           areaId: area.id,
           image:
             index === 8
@@ -106,11 +112,11 @@ export async function seedDemo(
                 : {
                     kind: 'artwork',
                     key:
-                      index % 4 === 0
+                      (index < 10 ? index : index - 10) % 4 === 0
                         ? 'music'
-                        : index % 4 === 1
+                        : (index < 10 ? index : index - 10) % 4 === 1
                           ? 'market'
-                          : index % 4 === 2
+                          : (index < 10 ? index : index - 10) % 4 === 2
                             ? 'art'
                             : 'outdoors',
                   },
@@ -130,7 +136,9 @@ export async function seedDemo(
           category:
             index === 9
               ? null
-              : ['Music', 'Market', 'Art', 'Outdoors'][index % 4]!,
+              : ['Music', 'Market', 'Art', 'Outdoors'][
+                  (index < 10 ? index : index - 10) % 4
+                ]!,
           schedule:
             index === 9
               ? { kind: 'unannounced' }
@@ -138,10 +146,13 @@ export async function seedDemo(
                 ? { kind: 'date-only', date, timezone: area.timezone }
                 : {
                     kind: 'exact',
-                    startsAt: `${date}T18:00:00Z`,
+                    startsAt: `${date}T${index < 10 ? '18' : '22'}:00:00Z`,
                     timezone: area.timezone,
                   },
-          price: prices[index % 5]!,
+          price:
+            index >= 10 && Math.floor((index - 10) / 4) % 2 === 0
+              ? { kind: 'free' }
+              : prices[index % 5]!,
           status:
             index === 6 ? 'cancelled' : index === 7 ? 'postponed' : 'scheduled',
           updatedAt: `${referenceDate}T12:00:00Z`,

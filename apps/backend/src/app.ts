@@ -3,6 +3,10 @@ import Fastify, { type FastifyError } from 'fastify';
 import swagger from '@fastify/swagger';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import {
+  DiscoveryContextQuerySchema,
+  DiscoveryContextResponseSchema,
+  DiscoveryEventsQuerySchema,
+  DiscoveryEventsResponseSchema,
   AreasResponseSchema,
   EventsResponseSchema,
   EventsQuerySchema,
@@ -108,6 +112,56 @@ export async function createApp(
       try {
         if (!catalog) throw new Error();
         return await catalog.events(request.query);
+      } catch (error) {
+        const problem = failure(error);
+        return reply
+          .code(problem.statusCode as 400 | 404 | 503)
+          .send({ error: { code: problem.code, message: problem.message } });
+      }
+    },
+  );
+  app.get(
+    '/v1/discovery/context',
+    {
+      schema: {
+        querystring: DiscoveryContextQuerySchema,
+        response: {
+          200: DiscoveryContextResponseSchema,
+          400: ErrorSchema,
+          404: ErrorSchema,
+          503: ErrorSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        if (!catalog) throw new Error();
+        return await catalog.discoveryContext(request.query.areaId);
+      } catch (error) {
+        const problem = failure(error);
+        return reply
+          .code(problem.statusCode as 400 | 404 | 503)
+          .send({ error: { code: problem.code, message: problem.message } });
+      }
+    },
+  );
+  app.get(
+    '/v1/discovery/events',
+    {
+      schema: {
+        querystring: DiscoveryEventsQuerySchema,
+        response: {
+          200: DiscoveryEventsResponseSchema,
+          400: ErrorSchema,
+          404: ErrorSchema,
+          503: ErrorSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        if (!catalog) throw new Error();
+        return await catalog.discoveryEvents(request.query);
       } catch (error) {
         const problem = failure(error);
         return reply

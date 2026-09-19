@@ -1,0 +1,37 @@
+{
+  "helper_branch": "codex/discover-collections-backend",
+  "base": "b3ef0fa6c9867fb50010b165246f35c02cad3365",
+  "identical_to_authoritative": [
+    "apps/backend/src/app.ts",
+    "apps/backend/src/catalog.ts",
+    "apps/backend/src/db/demo.ts",
+    "apps/backend/test/catalog-integration.ts",
+    "apps/backend/test/integration.test.ts",
+    "apps/backend/test/unit.test.ts",
+    "packages/contracts/src/index.ts",
+    "apps/backend/src/catalog-model.ts",
+    "apps/backend/src/discovery-date.ts",
+    "apps/backend/src/discovery.ts",
+    "apps/backend/test/discovery-integration.ts",
+    "packages/contracts/src/discovery.test.ts",
+    "packages/contracts/src/discovery.ts",
+    "plans/discover-collections/backend-notes.md"
+  ],
+  "preserved_planning_documents": [
+    {
+      "source": "plans/discover-collections/decisions.md",
+      "archive": "plans/discover-collections/helper-archive/decisions.md",
+      "sha256": "ba2f71d69e2be2034b730629ac6e6e134a6c534b9b539ba960f7809852675d94"
+    },
+    {
+      "source": "plans/discover-collections/plan.md",
+      "archive": "plans/discover-collections/helper-archive/plan.md",
+      "sha256": "21b48fc005613d1b9283517fbd4697cd5ddda40de76e021ae1c73fc3cf52f55f"
+    },
+    {
+      "source": "plans/discover-collections/tasks.md",
+      "archive": "plans/discover-collections/helper-archive/tasks.md",
+      "sha256": "e5092fd46be67dcf220134c9b865c59e83d6c15bc968cfbd37e9dbdc53711c1d"
+    }
+  ]
+}
