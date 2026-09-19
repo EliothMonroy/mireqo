@@ -1,4 +1,4 @@
-> Current reviewer status (2026-09-18): R01 Successful; R02 delivery in progress. See [review.md](review.md) for the current verdict and delivery outcome. Earlier execution status below is historical.
+> Current reviewer status (2026-09-18): R01 Successful; R02 delivered in feature commit `4c38b70333f4a7b9e2fe87033732223898b6efc5`, [PR #4](https://github.com/EliothMonroy/mireqo/pull/4). Helper cleanup complete. See [review.md](review.md) for the current verdict and delivery outcome. Earlier execution status below is historical.
 
 # Discover collections tasks
 

@@ -12,9 +12,16 @@ AC01–AC10 have adequate evidence for the agreed stage-2 scope. Physical device
 
 ## Current delivery status
 
-R01 complete: Successful. R02 in progress. Authenticated GitHub account `EliothMonroy` verified; `EliothMonroy/mireqo` is public with push/admin permission, default branch `main`, and no existing open PR for `codex/discover-collections`.
+R01 complete: Successful. R02 complete: feature committed, pushed and PR opened. Authenticated GitHub account `EliothMonroy` verified; `EliothMonroy/mireqo` is public with push/admin permission and default branch `main`.
 
-Dated changelog prepared. No speculative backlog item added. Fourteen helper files match authoritative copies; three unique planning documents were preserved opaquely in `helper-archive/` with hashes before any cleanup. Commit, push, PR and cleanup outcomes will be recorded after completion. Original root planning drafts and the authoritative feature worktree remain preserved.
+- Feature commit: `4c38b70333f4a7b9e2fe87033732223898b6efc5` — `feat - add Discover date filters and collection browsing`.
+- Push: `codex/discover-collections` successfully published to origin with upstream tracking.
+- Pull request: [#4 — Add Discover date filters and collection browsing](https://github.com/EliothMonroy/mireqo/pull/4), base `main`, source `codex/discover-collections`; attached to the Codex task. No merge, deployment or release.
+- Dated changelog included. No speculative backlog item added. Final source/delivery review and credential-pattern scan found no unintended changes or exposed secrets. Only trailing whitespace was removed from two captured test logs; application source remained identical to the verified manifest.
+- Cleanup: confirmed the backend helper agent completed and its branch had no divergent commits. Fourteen helper files matched authoritative copies; three unique planning documents were archived opaquely under `helper-archive/` with hashes and committed/pushed before removal. Ignored helper content consisted only of dependency/build directories. Removed `/Users/eliothmonroy/Documents/Github/mireqo/.worktrees/discover-collections-backend` and `codex/discover-collections-backend` successfully.
+- Retained: open PR source branch and authoritative worktree; original root planning drafts; active normal API/Metro preview, development/test databases, emulator/simulator and temporary native result bundles. These remain useful for the open PR and preserve development data/evidence. Durable feature evidence is committed; no blanket cleanup performed.
+
+This follow-up delivery record contains no application changes.
 
 ## Initial review record (superseded by the successful re-review above)
 
