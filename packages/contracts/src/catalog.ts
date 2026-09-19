@@ -126,7 +126,7 @@ export function validDate(value: string): boolean {
     new Date(value).toISOString().slice(0, 10) === value
   );
 }
-function validInstant(value: string): boolean {
+export function validInstant(value: string): boolean {
   return (
     validDate(value.slice(0, 10)) &&
     Number.isFinite(Date.parse(value)) &&

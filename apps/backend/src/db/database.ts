@@ -1,4 +1,4 @@
-import type { EventSummary } from '@mireqo/contracts';
+import type { EventDetails, EventSummary } from '@mireqo/contracts';
 import { Kysely, PostgresDialect, sql, type Generated } from 'kysely';
 import pg from 'pg';
 export interface Database {
@@ -16,6 +16,7 @@ export interface Database {
     id: string;
     area_id: string;
     summary: EventSummary;
+    details: Generated<EventDetails | null>;
     order_key: string;
   };
   catalog_source_records: {
@@ -51,7 +52,11 @@ export async function ready(db: Kysely<Database>) {
   await db.selectFrom('import_runs').select('id').limit(1).execute();
   await db.selectFrom('fixture_state').select('source').limit(1).execute();
   await db.selectFrom('browse_areas').select('id').limit(1).execute();
-  await db.selectFrom('catalog_events').select('id').limit(1).execute();
+  await db
+    .selectFrom('catalog_events')
+    .select(['id', 'details'])
+    .limit(1)
+    .execute();
   await db
     .selectFrom('catalog_source_records')
     .select('event_id')

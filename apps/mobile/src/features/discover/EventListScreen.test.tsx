@@ -1,3 +1,5 @@
+import { SavedContext } from '../../data/saved-context';
+import { createSavedStore } from '../../data/saved-store';
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { EventListScreen } from './EventListScreen';
@@ -8,6 +10,12 @@ import {
 } from '../../data/discovery-catalog';
 import { useDiscoverySession } from '../../data/discovery-session';
 import { context, page, areas } from '../../test/discovery-fixtures';
+jest.mock('expo-router', () => ({ useRouter: () => ({ push: jest.fn() }) }));
+const savedStore = createSavedStore({
+  initialize: async () => {},
+  read: async () => [],
+  write: async () => {},
+});
 jest.mock('../../data/discovery-catalog', () => ({
   ...jest.requireActual('../../data/discovery-catalog'),
   getDiscoveryEvents: jest.fn(),
@@ -40,7 +48,9 @@ test('first page has structured placeholders; pagination and refresh retain real
   });
   const view = render(
     <QueryClientProvider client={client}>
-      <EventListScreen initialScope={scope} onBack={jest.fn()} />
+      <SavedContext.Provider value={savedStore}>
+        <EventListScreen initialScope={scope} onBack={jest.fn()} />
+      </SavedContext.Provider>
     </QueryClientProvider>,
   );
   expect(

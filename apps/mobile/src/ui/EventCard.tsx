@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { EventSummary } from '@mireqo/contracts';
 import { useTheme } from './theme';
 const artwork = {
@@ -12,10 +12,18 @@ export function EventCard({
   event,
   schedule,
   price,
+  onOpen,
+  onSave,
+  saved = false,
+  saveReady = true,
 }: {
   event: EventSummary;
   schedule: string;
   price: string | null;
+  onOpen?: () => void;
+  onSave?: () => void;
+  saved?: boolean;
+  saveReady?: boolean;
 }) {
   const theme = useTheme();
   const [failed, setFailed] = useState(false);
@@ -35,63 +43,113 @@ export function EventCard({
         { backgroundColor: theme.surface, borderColor: theme.border },
       ]}
     >
-      <View style={[styles.visual, { backgroundColor: theme.imageFallback }]}>
-        {source && !failed ? (
-          <Image
-            source={source}
-            onError={() => setFailed(true)}
-            style={[StyleSheet.absoluteFill, { width: '100%', height: '100%' }]}
-            resizeMode="cover"
-            accessible={false}
-          />
-        ) : (
-          <View style={styles.fallback}>
-            <View style={[styles.orbit, { borderColor: theme.muted }]} />
-            <Text style={[styles.fallbackText, { color: theme.muted }]}>
-              Event image unavailable
-            </Text>
-          </View>
-        )}
-        {event.category && (
-          <View style={[styles.category, { backgroundColor: theme.surface }]}>
-            <Text style={[styles.categoryText, { color: theme.text }]}>
-              {event.category}
-            </Text>
-          </View>
-        )}
-      </View>
-      <View style={styles.body}>
-        <Text style={[styles.schedule, { color: theme.accent }]}>
-          {schedule}
-        </Text>
-        <Text
-          accessibilityRole="header"
-          style={[styles.title, { color: theme.text }]}
-        >
-          {event.title}
-        </Text>
-        {location ? (
-          <Text style={[styles.location, { color: theme.muted }]}>
-            {location}
-          </Text>
-        ) : (
-          <Text style={[styles.location, { color: theme.muted }]}>
-            Venue to be announced
-          </Text>
-        )}
-        {(price || event.status !== 'scheduled') && (
-          <View style={styles.bottom}>
-            {price && (
-              <Text style={[styles.price, { color: theme.text }]}>{price}</Text>
-            )}
-            {event.status !== 'scheduled' && (
-              <Text style={[styles.status, { color: theme.danger }]}>
-                {event.status === 'cancelled' ? 'Cancelled' : 'Postponed'}
+      <Pressable
+        accessibilityRole={onOpen ? 'button' : undefined}
+        accessibilityLabel={onOpen ? `Open ${event.title}` : undefined}
+        accessibilityHint={
+          onOpen
+            ? [
+                schedule,
+                location || 'Venue to be announced',
+                price || 'Price to be announced',
+                event.status !== 'scheduled' ? event.status : null,
+              ]
+                .filter(Boolean)
+                .join('. ')
+            : undefined
+        }
+        onPress={onOpen}
+        disabled={!onOpen}
+      >
+        <View style={[styles.visual, { backgroundColor: theme.imageFallback }]}>
+          {source && !failed ? (
+            <Image
+              source={source}
+              onError={() => setFailed(true)}
+              style={[
+                StyleSheet.absoluteFill,
+                { width: '100%', height: '100%' },
+              ]}
+              resizeMode="cover"
+              accessible={false}
+            />
+          ) : (
+            <View style={styles.fallback}>
+              <View style={[styles.orbit, { borderColor: theme.muted }]} />
+              <Text style={[styles.fallbackText, { color: theme.muted }]}>
+                Event image unavailable
               </Text>
-            )}
-          </View>
-        )}
-      </View>
+            </View>
+          )}
+          {event.category && (
+            <View style={[styles.category, { backgroundColor: theme.surface }]}>
+              <Text style={[styles.categoryText, { color: theme.text }]}>
+                {event.category}
+              </Text>
+            </View>
+          )}
+        </View>
+        <View style={styles.body}>
+          <Text style={[styles.schedule, { color: theme.accent }]}>
+            {schedule}
+          </Text>
+          <Text
+            accessibilityRole="header"
+            style={[styles.title, { color: theme.text }]}
+          >
+            {event.title}
+          </Text>
+          {location ? (
+            <Text style={[styles.location, { color: theme.muted }]}>
+              {location}
+            </Text>
+          ) : (
+            <Text style={[styles.location, { color: theme.muted }]}>
+              Venue to be announced
+            </Text>
+          )}
+          {(price || event.status !== 'scheduled') && (
+            <View style={styles.bottom}>
+              {price && (
+                <Text style={[styles.price, { color: theme.text }]}>
+                  {price}
+                </Text>
+              )}
+              {event.status !== 'scheduled' && (
+                <Text style={[styles.status, { color: theme.danger }]}>
+                  {event.status === 'cancelled' ? 'Cancelled' : 'Postponed'}
+                </Text>
+              )}
+            </View>
+          )}
+        </View>
+      </Pressable>
+      {onSave && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${saved ? 'Remove' : 'Save'} ${event.title}${saved ? ' from Saved' : ''}`}
+          accessibilityState={{ selected: saved, disabled: !saveReady }}
+          disabled={!saveReady}
+          onPress={onSave}
+          style={{
+            minHeight: 48,
+            padding: 16,
+            borderTopWidth: 1,
+            borderColor: theme.border,
+            justifyContent: 'center',
+          }}
+        >
+          <Text
+            style={{ color: theme.accent, fontSize: 16, fontWeight: '600' }}
+          >
+            {!saveReady
+              ? 'Loading saved state…'
+              : saved
+                ? '♥ Saved · Remove'
+                : '♡ Save event'}
+          </Text>
+        </Pressable>
+      )}
     </View>
   );
 }

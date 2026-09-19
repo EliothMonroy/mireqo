@@ -1,3 +1,7 @@
+import {
+  verifyDetailsUpgrade,
+  verifyEventDetails,
+} from './event-details-integration.ts';
 import { verifyDiscovery } from './discovery-integration.ts';
 import { verifyCatalog } from './catalog-integration.ts';
 import { test } from 'node:test';
@@ -17,6 +21,17 @@ test('real PostGIS, migrations, isolation, imports and process-loss recovery', a
   try {
     const before =
       await sql`select * from fixture_state order by source`.execute(dev);
+    const devCatalogBefore = await dev
+      .selectFrom('catalog_events')
+      .selectAll()
+      .orderBy('id')
+      .execute();
+    const devSourcesBefore = await dev
+      .selectFrom('catalog_source_records')
+      .selectAll()
+      .orderBy('source')
+      .orderBy('source_record_id')
+      .execute();
     await sql`drop schema public cascade`.execute(db);
     await sql`create schema public`.execute(db);
     await assert.rejects(() => ready(db));
@@ -33,6 +48,7 @@ test('real PostGIS, migrations, isolation, imports and process-loss recovery', a
       .executeTakeFirstOrThrow();
     await migrate(db, '002_fixture_state');
     await assert.rejects(() => ready(db));
+    await verifyDetailsUpgrade(db);
     await migrate(db);
     await migrate(db);
     await ready(db);
@@ -49,6 +65,7 @@ test('real PostGIS, migrations, isolation, imports and process-loss recovery', a
       (await db.selectFrom('fixture_state').selectAll().execute()).length,
       1,
     );
+    await verifyEventDetails(db, url);
     await verifyDiscovery(db, url);
     await verifyCatalog(db, url);
     const spatial = await sql<{
@@ -161,6 +178,23 @@ test('real PostGIS, migrations, isolation, imports and process-loss recovery', a
     assert.equal((await bad.inject('/v1/health')).statusCode, 200);
     await bad.close();
     await unavailable.destroy();
+    assert.deepEqual(
+      await dev
+        .selectFrom('catalog_events')
+        .selectAll()
+        .orderBy('id')
+        .execute(),
+      devCatalogBefore,
+    );
+    assert.deepEqual(
+      await dev
+        .selectFrom('catalog_source_records')
+        .selectAll()
+        .orderBy('source')
+        .orderBy('source_record_id')
+        .execute(),
+      devSourcesBefore,
+    );
     assert.deepEqual(
       (await sql`select * from fixture_state order by source`.execute(dev))
         .rows,

@@ -61,7 +61,9 @@ export function EventListScreen({
         data={result.items}
         keyExtractor={(event) => event.id}
         contentContainerStyle={styles.content}
-        renderItem={({ item }) => <Card event={item} />}
+        renderItem={({ item }) => (
+          <Card event={item} area={first?.area} demo={first?.demo} />
+        )}
         refreshControl={
           <RefreshControl
             refreshing={refreshing || result.isPlaceholderData}

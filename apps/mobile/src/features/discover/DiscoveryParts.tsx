@@ -5,7 +5,16 @@ import {
   Text,
   View,
 } from 'react-native';
-import type { DiscoveryDate, EventSummary } from '@mireqo/contracts';
+import { useRouter } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSaved } from '../../data/saved-context';
+import { summarySnapshot, type EventSnapshot } from '../../domain/saved-event';
+import type {
+  Area,
+  EventsResponse,
+  DiscoveryDate,
+  EventSummary,
+} from '@mireqo/contracts';
 import { dates } from '../../domain/discovery-filters';
 import { formatPrice, formatSchedule } from '../../domain/event-format';
 import { Action } from '../../ui/Action';
@@ -134,13 +143,53 @@ export function DateChoices({
     </View>
   );
 }
-export function Card({ event }: { event: EventSummary }) {
+export function Card({
+  event,
+  area,
+  demo,
+}: {
+  event: EventSummary;
+  area?: Area;
+  demo?: EventsResponse['demo'];
+}) {
+  const router = useRouter();
+  const saved = useSaved();
+  const client = useQueryClient();
+  const snapshot = area && demo ? summarySnapshot(event, area, demo) : null;
+  const open = () => {
+    if (snapshot && !client.getQueryData(['event-details', event.id]))
+      client.setQueryData(['event-preview', event.id], snapshot);
+    router.push({ pathname: '/event', params: { id: event.id } });
+  };
   return (
-    <EventCard
-      event={event}
-      schedule={formatSchedule(event.schedule)}
-      price={formatPrice(event.price)}
-    />
+    <View>
+      {saved.error && (
+        <Notice
+          message={saved.error}
+          label={saved.ready ? 'Retry saving' : 'Retry loading'}
+          onPress={() => saved.store.retry()}
+        />
+      )}
+      <EventCard
+        event={event}
+        onOpen={open}
+        saved={!!saved.entries[event.id]}
+        saveReady={saved.ready}
+        onSave={
+          snapshot
+            ? () =>
+                saved.store.toggle(
+                  client.getQueryData<EventSnapshot>([
+                    'event-details',
+                    event.id,
+                  ]) ?? snapshot,
+                )
+            : undefined
+        }
+        schedule={formatSchedule(event.schedule)}
+        price={formatPrice(event.price)}
+      />
+    </View>
   );
 }
 export const discoveryStyles = StyleSheet.create({

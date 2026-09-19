@@ -1,6 +1,8 @@
 import { sql, type Kysely } from 'kysely';
 import {
   parseEventsResponse,
+  parseEventDetailsResponse,
+  type EventDetailsResponse,
   type Area,
   type EventsQuery,
   type EventsResponse,
@@ -10,6 +12,7 @@ import type { Database } from './db/database.ts';
 import { CatalogError, toArea } from './catalog-model.ts';
 export { CatalogError } from './catalog-model.ts';
 export interface Catalog extends Discovery {
+  eventDetails(eventId: string): Promise<EventDetailsResponse>;
   areas(): Promise<{ items: Area[] }>;
   events(query: EventsQuery): Promise<EventsResponse>;
 }
@@ -47,6 +50,37 @@ export function createCatalog(
   }
   return {
     ...createDiscovery(db, enabled, clock),
+    async eventDetails(eventId) {
+      guard();
+      // A single joined statement observes event and dataset metadata together.
+      const row = await db
+        .selectFrom('catalog_events as event')
+        .innerJoin('browse_areas as area', 'area.id', 'event.area_id')
+        .selectAll('area')
+        .select(['event.summary', 'event.details'])
+        .where('event.id', '=', eventId)
+        .where('area.id', 'in', ['coacalco', 'tultitlan', 'mexico-city'])
+        .executeTakeFirst();
+      if (!row)
+        throw new CatalogError(404, 'EVENT_NOT_FOUND', 'Event not found');
+      if (row.summary.id !== eventId)
+        throw new Error('Invalid stored event identity');
+      return parseEventDetailsResponse({
+        event: row.summary,
+        area: toArea(row),
+        demo: {
+          isDemo: true,
+          referenceDate: row.reference_date,
+          datasetVersion: row.dataset_version,
+        },
+        details: row.details ?? {
+          endsAt: null,
+          description: null,
+          address: null,
+          externalUrl: null,
+        },
+      });
+    },
     async areas() {
       guard();
       return {

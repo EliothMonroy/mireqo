@@ -1,0 +1,96 @@
+{
+  "date": "2026-09-18",
+  "helper": "/Users/eliothmonroy/Documents/Github/mireqo/.worktrees/event-details-backend",
+  "files": [
+    {
+      "file": "apps/backend/src/db/event-details-migration.ts",
+      "preserved": "authoritative",
+      "sha256": "0859cabaf477c69b78d902945d9adf57b2cbda805d82af30177877fee9759ee2"
+    },
+    {
+      "file": "apps/backend/test/event-details-integration.ts",
+      "preserved": "authoritative",
+      "sha256": "2557017f09537e7dfe1b71fdf1e8f84d4997908b4395214e1db9b1c983caaadd"
+    },
+    {
+      "file": "packages/contracts/src/event-details.test.ts",
+      "preserved": "authoritative",
+      "sha256": "e0f84a08886fcce801bb24c4d222de193d9a66418c3a9af6aaa5b91660254f8c"
+    },
+    {
+      "file": "packages/contracts/src/event-details.ts",
+      "preserved": "authoritative",
+      "sha256": "6b663e68ade29356145f517cb108350039b09de66af7496fefb1f6d5c9ce053e"
+    },
+    {
+      "file": "plans/event-details-saved/backend-assessment.md",
+      "preserved": "plans/event-details-saved/helper-archive/backend-assessment.md",
+      "sha256": "8c2f65b534f6dccf02b7c68412ea571424f3d0281cbaec28f63c89b0e4c38d45"
+    },
+    {
+      "file": "plans/event-details-saved/backend-implementation.md",
+      "preserved": "authoritative",
+      "sha256": "782550bd363b18b1fb25e22424a267042236ebfcebf7abc0c6ceb5a6c759dd9e"
+    },
+    {
+      "file": "plans/event-details-saved/decisions.md",
+      "preserved": "authoritative",
+      "sha256": "f8dc6b173a592cc23042518c1bae9ab3c4ad413653342639b9261257a20a3ec7"
+    },
+    {
+      "file": "plans/event-details-saved/plan.md",
+      "preserved": "plans/event-details-saved/helper-archive/plan.md",
+      "sha256": "056ece7cb508c25fc3955fe70ca251caa56d1850de8f1a0e32c1e8ea4ccc58a9"
+    },
+    {
+      "file": "plans/event-details-saved/tasks.md",
+      "preserved": "plans/event-details-saved/helper-archive/tasks.md",
+      "sha256": "1ca17552fa3a374fdc73d51b180a51e0de19bba23943733930d11d852e95c13e"
+    },
+    {
+      "file": "apps/backend/src/app.ts",
+      "preserved": "authoritative",
+      "sha256": "71f276b4e97880a57fa524bec4be3384343a3f43ce73934e4efd8499a1a9b85d"
+    },
+    {
+      "file": "apps/backend/src/catalog.ts",
+      "preserved": "authoritative",
+      "sha256": "989d560865fa9ae911ab73975594bb9d813b53779dce195be0e16392e52db184"
+    },
+    {
+      "file": "apps/backend/src/db/database.ts",
+      "preserved": "authoritative",
+      "sha256": "03df0595cc4c0973e2bb3ea20838be0b04afbff14bb596e71b63865511e42199"
+    },
+    {
+      "file": "apps/backend/src/db/demo.ts",
+      "preserved": "authoritative",
+      "sha256": "8af4986ff5f1fb47a12b464056f4797ece78c0cd2dc08d0f73bf58a40b97c30b"
+    },
+    {
+      "file": "apps/backend/src/db/migrations.ts",
+      "preserved": "authoritative",
+      "sha256": "4768356b4df55a608bde0b410c0bc28bd11a9f5b4347186d9f9a7fc680f2e320"
+    },
+    {
+      "file": "apps/backend/test/catalog-integration.ts",
+      "preserved": "authoritative",
+      "sha256": "75b88c0c74aec47edef739d028660aebf759d3b711f2260c80fedb1fd264b149"
+    },
+    {
+      "file": "apps/backend/test/integration.test.ts",
+      "preserved": "authoritative",
+      "sha256": "3a2c8549b946e925c3933d53394e66f2728632f291fd9451745fa96b12a4a3be"
+    },
+    {
+      "file": "packages/contracts/src/catalog.ts",
+      "preserved": "authoritative",
+      "sha256": "8d14d928c934be7ef15bbb3fe8cd7c62331d5e7ba574fbac6c9986f8fc60e0a7"
+    },
+    {
+      "file": "packages/contracts/src/index.ts",
+      "preserved": "authoritative",
+      "sha256": "d766285d585c69743a5029cabf24f12cdc00b3f6803a84234b24f55ae05f0920"
+    }
+  ]
+}

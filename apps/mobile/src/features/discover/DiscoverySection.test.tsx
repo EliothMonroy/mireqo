@@ -1,3 +1,5 @@
+import { SavedContext } from '../../data/saved-context';
+import { createSavedStore } from '../../data/saved-store';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { View } from 'react-native';
@@ -7,6 +9,12 @@ import {
   type DiscoveryScope,
 } from '../../data/discovery-catalog';
 import { page } from '../../test/discovery-fixtures';
+jest.mock('expo-router', () => ({ useRouter: () => ({ push: jest.fn() }) }));
+const savedStore = createSavedStore({
+  initialize: async () => {},
+  read: async () => [],
+  write: async () => {},
+});
 jest.mock('../../data/discovery-catalog', () => ({
   ...jest.requireActual('../../data/discovery-catalog'),
   getDiscoveryEvents: jest.fn(),
@@ -28,18 +36,20 @@ test('partial failure keeps successful section visible with scoped retry; empty 
   const open = jest.fn();
   const view = render(
     <QueryClientProvider client={client}>
-      <View>
-        {(['free', 'music'] as const).map((collection) => (
-          <DiscoverySection
-            key={collection}
-            scope={{ ...scope, collection }}
-            title={collection === 'free' ? 'Free Events' : 'Music'}
-            onOpen={open}
-            onRestart={jest.fn()}
-            onEmptyRecovery={jest.fn()}
-          />
-        ))}
-      </View>
+      <SavedContext.Provider value={savedStore}>
+        <View>
+          {(['free', 'music'] as const).map((collection) => (
+            <DiscoverySection
+              key={collection}
+              scope={{ ...scope, collection }}
+              title={collection === 'free' ? 'Free Events' : 'Music'}
+              onOpen={open}
+              onRestart={jest.fn()}
+              onEmptyRecovery={jest.fn()}
+            />
+          ))}
+        </View>
+      </SavedContext.Provider>
     </QueryClientProvider>,
   );
   await waitFor(() => expect(view.getByText('Free concert')).toBeTruthy());
@@ -71,13 +81,15 @@ test('pending preview uses event placeholders that are replaced by loaded cards'
   });
   const view = render(
     <QueryClientProvider client={client}>
-      <DiscoverySection
-        scope={scope}
-        title="Free Events"
-        onOpen={jest.fn()}
-        onRestart={jest.fn()}
-        onEmptyRecovery={jest.fn()}
-      />
+      <SavedContext.Provider value={savedStore}>
+        <DiscoverySection
+          scope={scope}
+          title="Free Events"
+          onOpen={jest.fn()}
+          onRestart={jest.fn()}
+          onEmptyRecovery={jest.fn()}
+        />
+      </SavedContext.Provider>
     </QueryClientProvider>,
   );
   expect(

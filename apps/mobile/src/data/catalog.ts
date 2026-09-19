@@ -12,18 +12,37 @@ export async function request(
   path: string,
   signal?: AbortSignal,
 ): Promise<unknown> {
-  const response = await fetch(`${apiUrl.replace(/\/$/, '')}${path}`, {
-    signal,
-  });
-  if (!response.ok) {
+  try {
+    const response = await fetch(`${apiUrl.replace(/\/$/, '')}${path}`, {
+      signal,
+    });
+    if (!response.ok) {
+      throw new CatalogError(
+        response.status === 404
+          ? 'NOT_FOUND'
+          : response.status === 400
+            ? 'INVALID_REQUEST'
+            : 'UNAVAILABLE',
+        response.status === 400
+          ? 'This demo catalog changed. Refresh to start again.'
+          : 'We could not reach the event catalog. Please try again.',
+      );
+    }
+    return await response.json();
+  } catch (error) {
+    // Native transport/body-read exceptions can contain implementation details
+    // and URLs. Keep cancellation and typed HTTP failures intact.
+    if (
+      error instanceof CatalogError ||
+      signal?.aborted ||
+      (error instanceof Error && error.name === 'AbortError')
+    )
+      throw error;
     throw new CatalogError(
-      response.status === 400 ? 'INVALID_REQUEST' : 'UNAVAILABLE',
-      response.status === 400
-        ? 'This demo catalog changed. Refresh to start again.'
-        : 'We could not reach the event catalog. Please try again.',
+      'UNAVAILABLE',
+      'We could not reach the event catalog. Please try again.',
     );
   }
-  return response.json();
 }
 export async function getAreas(signal?: AbortSignal) {
   return parseAreasResponse(await request('/v1/areas', signal));
