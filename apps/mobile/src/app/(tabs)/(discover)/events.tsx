@@ -1,9 +1,9 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Text, View } from 'react-native';
-import { parseDiscoveryRoute } from '../domain/discovery-filters';
-import { EventListScreen } from '../features/discover/EventListScreen';
-import { Action } from '../ui/Action';
-import { useTheme } from '../ui/theme';
+import { parseDiscoveryRoute } from '../../../domain/discovery-filters';
+import { EventListScreen } from '../../../features/discover/EventListScreen';
+import { Action } from '../../../ui/Action';
+import { useTheme } from '../../../ui/theme';
 export default function EventsRoute() {
   const params = useLocalSearchParams();
   const scope = parseDiscoveryRoute(params);

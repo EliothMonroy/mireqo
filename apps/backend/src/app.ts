@@ -3,6 +3,8 @@ import Fastify, { type FastifyError } from 'fastify';
 import swagger from '@fastify/swagger';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import {
+  EventDetailsResponseSchema,
+  EventIdParamsSchema,
   DiscoveryContextQuerySchema,
   DiscoveryContextResponseSchema,
   DiscoveryEventsQuerySchema,
@@ -20,6 +22,7 @@ export async function createApp(
 ) {
   const app = Fastify({
     logger: logging,
+    routerOptions: { maxParamLength: 2048 },
     ajv: { customOptions: { removeAdditional: false } },
     disableRequestLogging: true,
   }).withTypeProvider<TypeBoxTypeProvider>();
@@ -112,6 +115,31 @@ export async function createApp(
       try {
         if (!catalog) throw new Error();
         return await catalog.events(request.query);
+      } catch (error) {
+        const problem = failure(error);
+        return reply
+          .code(problem.statusCode as 400 | 404 | 503)
+          .send({ error: { code: problem.code, message: problem.message } });
+      }
+    },
+  );
+  app.get(
+    '/v1/events/:eventId',
+    {
+      schema: {
+        params: EventIdParamsSchema,
+        response: {
+          200: EventDetailsResponseSchema,
+          400: ErrorSchema,
+          404: ErrorSchema,
+          503: ErrorSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        if (!catalog) throw new Error();
+        return await catalog.eventDetails(request.params.eventId);
       } catch (error) {
         const problem = failure(error);
         return reply

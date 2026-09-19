@@ -76,7 +76,12 @@ export function DiscoverySection({
         />
       )}
       {result.data?.items.map((event) => (
-        <Card key={event.id} event={event} />
+        <Card
+          key={event.id}
+          event={event}
+          area={result.data!.area}
+          demo={result.data!.demo}
+        />
       ))}
       {general &&
         result.data?.items.length === 0 &&

@@ -1,5 +1,10 @@
 import type { Kysely } from 'kysely';
-import { validDate, type Area, type EventSummary } from '@mireqo/contracts';
+import {
+  validDate,
+  type Area,
+  type EventDetails,
+  type EventSummary,
+} from '@mireqo/contracts';
 import type { Database } from './database.ts';
 import { isDemoTarget } from '../config.ts';
 import { orderKey } from '../catalog.ts';
@@ -61,7 +66,7 @@ export async function seedDemo(
     );
   if (!validDate(referenceDate))
     throw new Error('Reference date must be a valid ISO calendar date');
-  const version = `demo-v2:${referenceDate}`;
+  const version = `demo-v3:${referenceDate}`;
   await db.transaction().execute(async (trx) => {
     for (const area of demoAreas) {
       const row = {
@@ -175,10 +180,35 @@ export async function seedDemo(
             .executeTakeFirst())
         )
           throw new Error('Demo identity collision');
+        const details: EventDetails = {
+          description:
+            index === 9
+              ? null
+              : index === 6
+                ? Array.from(
+                    { length: 8 },
+                    (_, paragraph) =>
+                      `Demo chapter ${paragraph + 1}: Explore handmade pieces, shared histories and new perspectives in this fictional community exhibition. This synthetic event illustrates Mireqo and is not a real listing.`,
+                  ).join('\n\n')
+                : `A fictional ${event.category?.toLowerCase() ?? 'community'} gathering at the demo community space in ${area.name}. This synthetic example is for exploring Mireqo; it is not a real event or ticket offer.`,
+          address:
+            index === 8 || index === 9
+              ? null
+              : `Example address (fictional), Demo community space, ${area.name}`,
+          endsAt:
+            event.schedule.kind === 'exact' && index % 3 !== 0
+              ? new Date(
+                  Date.parse(event.schedule.startsAt) +
+                    (index === 7 ? 16 : 2) * 60 * 60 * 1000,
+                ).toISOString()
+              : null,
+          externalUrl: index % 2 === 0 ? 'https://example.org/' : null,
+        };
         const record = {
           id,
           area_id: area.id,
           summary: event,
+          details,
           order_key: orderKey(event),
         };
         await trx

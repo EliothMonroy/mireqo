@@ -10,6 +10,9 @@ import * as Network from 'expo-network';
 import { createAreaPreference } from '../data/area-preference';
 import { sqliteAreaStorage } from '../data/area-sqlite';
 import { DiscoverySessionProvider } from '../data/discovery-session';
+import { createSavedStore } from '../data/saved-store';
+import { sqliteSavedStorage } from '../data/saved-sqlite';
+import { SavedContext } from '../data/saved-context';
 import { AreaPreferenceContext } from '../data/preferences';
 
 export function AppProviders({ children }: PropsWithChildren) {
@@ -24,7 +27,9 @@ export function AppProviders({ children }: PropsWithChildren) {
   const [preferences] = useState(() =>
     createAreaPreference(sqliteAreaStorage()),
   );
+  const [saved] = useState(() => createSavedStore(sqliteSavedStorage()));
   useEffect(() => {
+    void saved.hydrate();
     void preferences.hydrate();
     focusManager.setFocused(AppState.currentState === 'active');
     const appState = AppState.addEventListener('change', (state) =>
@@ -50,11 +55,13 @@ export function AppProviders({ children }: PropsWithChildren) {
       appState.remove();
       network.remove();
     };
-  }, [preferences]);
+  }, [preferences, saved]);
   return (
     <QueryClientProvider client={client}>
       <AreaPreferenceContext.Provider value={preferences}>
-        <DiscoverySessionProvider>{children}</DiscoverySessionProvider>
+        <SavedContext.Provider value={saved}>
+          <DiscoverySessionProvider>{children}</DiscoverySessionProvider>
+        </SavedContext.Provider>
       </AreaPreferenceContext.Provider>
     </QueryClientProvider>
   );

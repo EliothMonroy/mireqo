@@ -1,3 +1,4 @@
+import { serializeLocalIO } from './local-io';
 import { openDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 import type { AreaPreferenceStorage } from './area-preference';
 
@@ -10,38 +11,44 @@ export function sqliteAreaStorage(): AreaPreferenceStorage {
   }
   return {
     async initialize() {
-      database ??= await openDatabaseAsync('mireqo.db');
-      await database.withExclusiveTransactionAsync(async (transaction) => {
-        await transaction.execAsync(
-          'CREATE TABLE IF NOT EXISTS mireqo_preference_migrations (version INTEGER PRIMARY KEY NOT NULL)',
-        );
-        const version = await transaction.getFirstAsync<{ version: number }>(
-          'SELECT MAX(version) AS version FROM mireqo_preference_migrations',
-        );
-        if ((version?.version ?? 0) < 1) {
+      return serializeLocalIO(async () => {
+        database ??= await openDatabaseAsync('mireqo.db');
+        await database.withExclusiveTransactionAsync(async (transaction) => {
           await transaction.execAsync(
-            'CREATE TABLE IF NOT EXISTS mireqo_preferences (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL)',
+            'CREATE TABLE IF NOT EXISTS mireqo_preference_migrations (version INTEGER PRIMARY KEY NOT NULL)',
           );
-          await transaction.runAsync(
-            'INSERT INTO mireqo_preference_migrations (version) VALUES (?)',
-            1,
+          const version = await transaction.getFirstAsync<{ version: number }>(
+            'SELECT MAX(version) AS version FROM mireqo_preference_migrations',
           );
-        }
+          if ((version?.version ?? 0) < 1) {
+            await transaction.execAsync(
+              'CREATE TABLE IF NOT EXISTS mireqo_preferences (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL)',
+            );
+            await transaction.runAsync(
+              'INSERT INTO mireqo_preference_migrations (version) VALUES (?)',
+              1,
+            );
+          }
+        });
       });
     },
     async read() {
-      const result = await db().getFirstAsync<{ value: string }>(
-        'SELECT value FROM mireqo_preferences WHERE key = ?',
-        'selected-area',
-      );
-      return result?.value ?? null;
+      return serializeLocalIO(async () => {
+        const result = await db().getFirstAsync<{ value: string }>(
+          'SELECT value FROM mireqo_preferences WHERE key = ?',
+          'selected-area',
+        );
+        return result?.value ?? null;
+      });
     },
     async write(areaId) {
-      await db().runAsync(
-        'INSERT INTO mireqo_preferences (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value',
-        'selected-area',
-        areaId,
-      );
+      return serializeLocalIO(async () => {
+        await db().runAsync(
+          'INSERT INTO mireqo_preferences (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value',
+          'selected-area',
+          areaId,
+        );
+      });
     },
   };
 }

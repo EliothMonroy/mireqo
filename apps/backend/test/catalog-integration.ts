@@ -103,7 +103,20 @@ export async function verifyCatalog(db: Kysely<Database>, url: string) {
         summary: { ...sample.summary, id: 'unrelated' },
       })
       .execute();
+    const unrelatedBefore = await db
+      .selectFrom('catalog_events')
+      .selectAll()
+      .where('id', '=', 'unrelated')
+      .executeTakeFirstOrThrow();
     await seedDemo(db, url, '2026-09-08');
+    assert.deepEqual(
+      await db
+        .selectFrom('catalog_events')
+        .selectAll()
+        .where('id', '=', 'unrelated')
+        .executeTakeFirstOrThrow(),
+      unrelatedBefore,
+    );
     assert.ok(
       await db
         .selectFrom('catalog_events')
@@ -126,7 +139,31 @@ export async function verifyCatalog(db: Kysely<Database>, url: string) {
       .selectAll()
       .orderBy('id')
       .execute();
+    const eventsBeforeFailure = await db
+      .selectFrom('catalog_events')
+      .selectAll()
+      .orderBy('id')
+      .execute();
+    const sourcesBeforeFailure = await db
+      .selectFrom('catalog_source_records')
+      .selectAll()
+      .orderBy('source')
+      .orderBy('source_record_id')
+      .execute();
     await assert.rejects(() => seedDemo(db, url, '2026-09-09'));
+    assert.deepEqual(
+      await db.selectFrom('catalog_events').selectAll().orderBy('id').execute(),
+      eventsBeforeFailure,
+    );
+    assert.deepEqual(
+      await db
+        .selectFrom('catalog_source_records')
+        .selectAll()
+        .orderBy('source')
+        .orderBy('source_record_id')
+        .execute(),
+      sourcesBeforeFailure,
+    );
     assert.deepEqual(
       await db.selectFrom('browse_areas').selectAll().orderBy('id').execute(),
       state,

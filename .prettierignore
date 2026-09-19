@@ -19,3 +19,7 @@ implementer.md
 tester.md
 reviewer.md
 architecture.md
+
+# Historical handoff evidence is preserved byte-for-byte.
+plans/discover-collections/helper-archive
+plans/event-details-saved/helper-archive
