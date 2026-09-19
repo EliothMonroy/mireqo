@@ -31,12 +31,15 @@ No unresolved concrete correction remains. The clarified scope is implemented su
 
 ## Delivery status
 
-In progress after the Successful verdict:
+Completed after the Successful verdict:
 
 - Prepended the dated changelog entry and preserved earlier entries.
 - Verified origin is `https://github.com/EliothMonroy/mireqo.git`, the repository is public, reviewer access is ADMIN, default/base branch is main, and no existing feature PR exists.
 - Coordinator confirmed publication safety for excluded historical records/native text evidence without exposing their contents as review input.
 - Rechecked all 18 modified/untracked helper files: 15 are byte-identical to authoritative copies; three unique helper records are preserved byte-for-byte under `helper-archive/` with a SHA-256 manifest. Coordinator confirmed the helper is inactive. Archived records are excluded from formatting to retain exact historical bytes.
-- Commit, push, PR and post-delivery cleanup: pending; actual outcomes will be recorded after completion.
+- Feature commit `8b2bea40a019d6201f21d1594052b516093fc2dd` (`feat - add event details and offline saved events`) was created and pushed to `origin/codex/event-details-saved` successfully.
+- Created [PR #5](https://github.com/EliothMonroy/mireqo/pull/5) against main and attached it to the task. No merge or release performed.
+- Before cleanup, rechecked all 18 helper paths against both the archive manifest and preserved feature copies. The only ignored helper paths were dependency links/directories and generated build output. Removed the inactive `event-details-backend` helper worktree and deleted `codex/event-details-backend`; Git confirms only main and the PR source worktree remain.
+- Current source/test files were checked for high-confidence secrets without findings; excluded historical records were covered by the coordinator's publication audit. Staged whitespace validation passed. Delivery documentation is recorded in a follow-up documentation commit without changing tested application source.
 
-The open PR source branch/worktree, main planning drafts, simulator app data and repository database resources must be retained. No merge, publication or release is authorized by this delivery.
+Intentionally retained: the open PR source branch/worktree; untracked main planning drafts; task-owned API/Metro under coordinator ownership for PR inspection; native evidence and temporary Apple verification outputs; simulator app data and repository database resources. No unique evidence or user data was removed. Post-merge cleanup of the retained PR source and drafts is outside this delivery.
