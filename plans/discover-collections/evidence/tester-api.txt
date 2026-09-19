@@ -1,0 +1,4 @@
+coacalco legacy=66 independent filter/page comparisons=37 browsingDate=2026-09-18
+mexico-city legacy=66 independent filter/page comparisons=37 browsingDate=2026-09-18
+tultitlan legacy=66 independent filter/page comparisons=37 browsingDate=2026-09-18
+PASS: 111 live HTTP result-set comparisons; real dev catalog untouched

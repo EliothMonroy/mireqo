@@ -5,29 +5,13 @@ import {
   type EventsQuery,
   type EventsResponse,
 } from '@mireqo/contracts';
+import { createDiscovery, type Discovery } from './discovery.ts';
 import type { Database } from './db/database.ts';
-export class CatalogError extends Error {
-  statusCode: number;
-  code: string;
-  constructor(statusCode: number, code: string, message: string) {
-    super(message);
-    this.statusCode = statusCode;
-    this.code = code;
-  }
-}
-export interface Catalog {
+import { CatalogError, toArea } from './catalog-model.ts';
+export { CatalogError } from './catalog-model.ts';
+export interface Catalog extends Discovery {
   areas(): Promise<{ items: Area[] }>;
   events(query: EventsQuery): Promise<EventsResponse>;
-}
-function area(row: Database['browse_areas']): Area {
-  return {
-    id: row.id,
-    name: row.name,
-    administrativeContext: row.administrative_context,
-    kind: row.kind,
-    country: row.country,
-    timezone: row.timezone,
-  };
 }
 // Lexicographic keys: local calendar date, then date-only before exact local time;
 // unannounced follows all dated entries. No fabricated instant for date-only.
@@ -48,7 +32,11 @@ export function orderKey(event: Database['catalog_events']['summary']): string {
   const get = (type: string) => parts.find((p) => p.type === type)!.value;
   return `0:${get('year')}-${get('month')}-${get('day')}:1:${get('hour')}:${get('minute')}:${get('second')}.${String(new Date(schedule.startsAt).getUTCMilliseconds()).padStart(3, '0')}`;
 }
-export function createCatalog(db: Kysely<Database>, enabled: boolean): Catalog {
+export function createCatalog(
+  db: Kysely<Database>,
+  enabled: boolean,
+  clock: () => Date = () => new Date(),
+): Catalog {
   function guard() {
     if (!enabled)
       throw new CatalogError(
@@ -58,6 +46,7 @@ export function createCatalog(db: Kysely<Database>, enabled: boolean): Catalog {
       );
   }
   return {
+    ...createDiscovery(db, enabled, clock),
     async areas() {
       guard();
       return {
@@ -68,7 +57,7 @@ export function createCatalog(db: Kysely<Database>, enabled: boolean): Catalog {
             .where('id', 'in', ['coacalco', 'tultitlan', 'mexico-city'])
             .orderBy('name')
             .execute()
-        ).map(area),
+        ).map(toArea),
       };
     },
     async events(query) {
@@ -150,7 +139,7 @@ export function createCatalog(db: Kysely<Database>, enabled: boolean): Catalog {
           const page = records.slice(0, limit);
           const boundary = page.at(-1);
           return parseEventsResponse({
-            area: area(row),
+            area: toArea(row),
             items: page.map((r) => r.summary),
             nextCursor:
               records.length > limit && boundary

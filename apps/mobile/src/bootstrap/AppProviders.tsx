@@ -9,6 +9,7 @@ import {
 import * as Network from 'expo-network';
 import { createAreaPreference } from '../data/area-preference';
 import { sqliteAreaStorage } from '../data/area-sqlite';
+import { DiscoverySessionProvider } from '../data/discovery-session';
 import { AreaPreferenceContext } from '../data/preferences';
 
 export function AppProviders({ children }: PropsWithChildren) {
@@ -53,7 +54,7 @@ export function AppProviders({ children }: PropsWithChildren) {
   return (
     <QueryClientProvider client={client}>
       <AreaPreferenceContext.Provider value={preferences}>
-        {children}
+        <DiscoverySessionProvider>{children}</DiscoverySessionProvider>
       </AreaPreferenceContext.Provider>
     </QueryClientProvider>
   );

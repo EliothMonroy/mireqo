@@ -1,0 +1,20 @@
+MIREQO_SHOT ios-default-light
+MIREQO_SHOT ios-date-today
+MIREQO_SHOT ios-date-tomorrow
+MIREQO_SHOT ios-date-this-weekend
+MIREQO_SHOT ios-date-this-week
+MIREQO_SHOT ios-area-retains-date
+MIREQO_SHOT ios-music-tomorrow
+MIREQO_SHOT ios-parent-before-list
+MIREQO_SHOT ios-list-page-one-footer
+MIREQO_SHOT ios-list-page-two
+MIREQO_SHOT ios-parent-restored
+MIREQO_FLOW_PASS all dates; all areas retain date; category+date; edge-swipe back; SeeAll pagination; parent scroll restored
+Test Case '-[MireqoCheck.Check testDiscovery]' passed (55.256 seconds).
+Test Suite 'Check' passed at 2026-09-18 19:27:59.630.
+	 Executed 1 test, with 0 failures (0 unexpected) in 55.256 (55.257) seconds
+Test Suite 'MireqoCheck.xctest' passed at 2026-09-18 19:27:59.630.
+	 Executed 1 test, with 0 failures (0 unexpected) in 55.256 (55.257) seconds
+Test Suite 'Selected tests' passed at 2026-09-18 19:27:59.630.
+	 Executed 1 test, with 0 failures (0 unexpected) in 55.256 (55.258) seconds
+** TEST EXECUTE SUCCEEDED **
