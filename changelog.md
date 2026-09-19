@@ -1,3 +1,4 @@
+2026-09-19 — Add the mobile-first Mireqo website brief, in-app screenshots, and approved Open City logo assets for web and mobile handoff.
 2026-09-18 — Add shared Event Details and local Saved Events with offline snapshots, consistent save controls, truthful event timing, native sharing and external demo/location actions, backed by additive catalog details and verified Android/iOS journeys.
 2026-09-18 — Add Discover date shortcuts, categories and collections with context-bound backend filtering, paginated event lists, accessible loading placeholders and resilient Android/iOS browsing.
 2026-09-08 — Add Discover area selection and persistent preferences, backend-served local demo catalogs with cursor pagination, truthful event cards, and recoverable loading/offline states on Android and iOS.
