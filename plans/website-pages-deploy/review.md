@@ -8,4 +8,6 @@ The starter workflow uploaded the repository root. The updated workflow tests th
 
 ## Delivery
 
-Pending changelog, commit, push, and PR.
+- Commit: `2ab71bd` — `fix - deploy the product website public folder to GitHub Pages`
+- Push: `origin/codex/website-pages-deploy`
+- PR: https://github.com/EliothMonroy/mireqo/pull/8
