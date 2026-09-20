@@ -9,4 +9,4 @@
 | P01 | Plan desktop grouping | Planner | Complete |
 | I01 | HTML/CSS and checks | Lead implementer | Complete |
 | T01 | Independent layout verification | Independent tester | Complete |
-| R01 | Verdict and delivery | Independent reviewer | In progress |
+| R01 | Verdict and delivery | Independent reviewer | Complete |

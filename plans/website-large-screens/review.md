@@ -6,4 +6,7 @@ The intro grouping, start-aligned 768px grid, and 1200px two-column layout fix t
 
 ## Delivery
 
-Pending commit, push, and PR.
+- Commit: `e86241e`
+- PR: https://github.com/EliothMonroy/mireqo/pull/9
+- Feature branch `codex/website-large-screens` is preserved while the PR is open.
+- Worktree `/Users/eliothmonroy/Documents/Github/mireqo/.worktrees/website-large-screens` retained for the open PR.
