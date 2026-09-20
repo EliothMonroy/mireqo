@@ -193,9 +193,13 @@ test('keeps public copy under the word budget and stays informational without Ja
 
 test('styles are mobile-first with a contained screenshot strip and a wide-layout grid', () => {
   const css = read(cssPath);
+  const html = collapsed(read(htmlPath));
+  assert.match(html, /class="intro wrap"/);
   assert.match(css, /scroll-snap-type:\s*x\s+mandatory/);
   assert.match(css, /@media \(min-width:\s*768px\)/);
+  assert.match(css, /@media \(min-width:\s*1200px\)/);
   assert.match(css, /max-width:\s*1120px/);
+  assert.match(css, /\.preview-strip[\s\S]{0,200}justify-content:\s*start/);
   assert.match(css, /#F7F3EB/i);
   assert.match(css, /#93442C/i);
   assert.match(css, /prefers-reduced-motion/);

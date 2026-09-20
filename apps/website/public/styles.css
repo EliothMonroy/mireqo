@@ -122,12 +122,11 @@ h2,
 h3 {
   margin: 0;
   line-height: 1.15;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 h1 {
   font-size: clamp(1.75rem, 6vw, 3rem);
-  max-width: 18ch;
 }
 
 .lede,
@@ -141,7 +140,7 @@ h1 {
 
 .lede {
   margin: 0.85rem 0 1.1rem;
-  max-width: 38ch;
+  max-width: 42ch;
 }
 
 .hero-action {
@@ -186,8 +185,8 @@ h1 {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--space);
-  padding-inline: var(--space);
+  scroll-padding-inline: 0;
+  padding-inline: 0;
   padding-bottom: 0.4rem;
   -webkit-overflow-scrolling: touch;
 }
@@ -269,20 +268,53 @@ h1 {
     display: none;
   }
 
+  .features h2 {
+    margin-bottom: 1rem;
+  }
+
   .preview-strip {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 18.75rem));
-    justify-content: space-between;
+    justify-content: start;
+    gap: 1.25rem;
     overflow: visible;
     scroll-snap-type: none;
-    width: min(100% - 2 * var(--space), var(--max));
-    margin-inline: auto;
-    padding-inline: 0;
+    width: 100%;
   }
 
   .preview-card {
     flex: none;
     max-width: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .intro {
+    display: grid;
+    grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
+    column-gap: 2.5rem;
+    align-items: start;
+    padding-block: 1.5rem 2.5rem;
+  }
+
+  .hero {
+    padding-block: 0.15rem 0.5rem;
+  }
+
+  .features {
+    padding-block: 0;
+  }
+
+  .features h2 {
+    margin-bottom: 1rem;
+  }
+
+  .preview-strip {
+    gap: 1rem;
+  }
+
+  .disclosure {
+    margin-top: 0.85rem;
   }
 }
 
