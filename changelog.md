@@ -1,3 +1,4 @@
+2026-09-19 — Compose the product website intro on large screens so hero copy sits beside start-aligned screenshot previews instead of leaving empty space and stretched card gaps.
 2026-09-19 — Publish only apps/website/public to GitHub Pages after website page tests, instead of uploading the repository root.
 2026-09-19 — Add a static mobile-first Mireqo product website in apps/website, using the approved Open City logo and in-app screenshot previews, with a local preview command and page tests.
 2026-09-19 — Add the mobile-first Mireqo website brief, in-app screenshots, and approved Open City logo assets in shared root assets directories, referenced by the website handoff.
