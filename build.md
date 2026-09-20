@@ -60,6 +60,7 @@ Run commands through `mise exec --`, for example `mise exec -- pnpm run check`.
 | `pnpm run format`                 | Apply formatting to maintained application/tooling documents and code                                      |
 | `pnpm run test`                   | Node tooling tests and Jest/Testing Library component tests, once                                          |
 | `pnpm run check`                  | Lint, typecheck, format check, then tests; stops on failure                                                |
+| `pnpm run website`                | Serve the static product page from `apps/website/public` on 127.0.0.1:4173                                 |
 
 `check` needs no simulator. Passing it does not prove native compilation or launch. Doctor never installs, repairs, regenerates, or changes shell configuration. It checks basic executable/SDK prerequisites, not Xcode Platform Support registration, every native build failure, or device availability. An iOS basic-prerequisite pass still requires the manual Platform Support check above.
 
@@ -96,7 +97,11 @@ Native verification must record the actual emulator/simulator, OS, build command
 
 ## Workspace and backend
 
-The workspace contains `apps/mobile`, `apps/backend`, and `packages/contracts`. Root mobile commands forward arguments to Expo from its application directory. Gemfile and the local bundle stay at root; native wrappers set BUNDLE_GEMFILE explicitly. Install from root with the frozen lockfile. `pnpm build` compiles contracts before backend; `pnpm check` builds, lints, checks types/format, and runs tooling, contracts, mobile, and backend HTTP tests.
+The workspace contains `apps/mobile`, `apps/backend`, `apps/website`, and `packages/contracts`. Root mobile commands forward arguments to Expo from its application directory. Gemfile and the local bundle stay at root; native wrappers set BUNDLE_GEMFILE explicitly. Install from root with the frozen lockfile. `pnpm build` compiles contracts before backend and does not build the website. `pnpm check` builds, lints, checks types/format, and runs tooling, contracts, mobile, backend HTTP, and website page tests.
+
+### Product website
+
+`apps/website` is a static introduction page. Preview it with `mise exec -- pnpm run website` and open `http://127.0.0.1:4173/`. Website tests read the delivered HTML, CSS, and copied assets and do not require the API, database, or a native app. Do not deploy this page as part of ordinary local development.
 
 Backend packages are pinned in their manifests: Fastify 5.12.3, Kysely 0.29.5 with pg 8.23.0, TypeBox 0.33.24 (compatible with the provider peer range), its Fastify provider 5.2.0, and Swagger 9.8.1. TypeScript remains 6.0.3. The pinned image currently reports PostgreSQL 17.5 and PostGIS 3.5.2. Node's built-in TypeScript stripping runs development commands; `pnpm build` produces executable JavaScript in package-local ignored dist directories. Contracts export platform-neutral source for Metro and built JavaScript for Node. Build contracts before standalone backend commands.
 

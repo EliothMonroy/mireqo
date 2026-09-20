@@ -1,0 +1,10 @@
+{
+  "name": "@mireqo/website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preview": "node serve.mjs",
+    "test": "node --test test/page.test.mjs"
+  }
+}

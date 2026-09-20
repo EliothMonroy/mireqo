@@ -34,11 +34,12 @@ The agreed target structure is:
 apps/
   mobile/              # Expo application
   backend/             # Fastify API and import worker, sharing backend modules
+  website/             # Static product introduction page
 packages/
   contracts/           # API schemas and inferred TypeScript types
 ```
 
-The Expo application lives in apps/mobile. The API and worker are separate processes within one backend application. Do not introduce separate services or additional shared packages without a demonstrated need.
+The Expo application lives in apps/mobile. The API and worker are separate processes within one backend application. The website is a static HTML/CSS product introduction with copied brand and screenshot assets; it does not call the catalog API or share runtime code with mobile or backend. Do not introduce separate services or additional shared packages without a demonstrated need.
 
 Share API contracts across mobile and backend, not database models or provider integrations. Contracts must be usable without importing backend runtime code or mobile dependencies. Each application keeps its internal domain and data-access modules private; extract other shared logic only when justified.
 
