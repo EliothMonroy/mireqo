@@ -101,7 +101,7 @@ The workspace contains `apps/mobile`, `apps/backend`, `apps/website`, and `packa
 
 ### Product website
 
-`apps/website` is a static introduction page. Preview it with `mise exec -- pnpm run website` and open `http://127.0.0.1:4173/`. Website tests read the delivered HTML, CSS, and copied assets and do not require the API, database, or a native app. Do not deploy this page as part of ordinary local development.
+`apps/website` is a static introduction page. Preview it with `mise exec -- pnpm run website` and open `http://127.0.0.1:4173/`. Website tests read the delivered HTML, CSS, and copied assets and do not require the API, database, or a native app. GitHub Pages publishes only `apps/website/public` through `.github/workflows/static.yml` after those page tests pass. Do not treat local `pnpm run website` as a production deploy.
 
 Backend packages are pinned in their manifests: Fastify 5.12.3, Kysely 0.29.5 with pg 8.23.0, TypeBox 0.33.24 (compatible with the provider peer range), its Fastify provider 5.2.0, and Swagger 9.8.1. TypeScript remains 6.0.3. The pinned image currently reports PostgreSQL 17.5 and PostGIS 3.5.2. Node's built-in TypeScript stripping runs development commands; `pnpm build` produces executable JavaScript in package-local ignored dist directories. Contracts export platform-neutral source for Metro and built JavaScript for Node. Build contracts before standalone backend commands.
 
