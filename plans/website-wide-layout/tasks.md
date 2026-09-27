@@ -9,4 +9,4 @@
 | P01 | Plan the wider large-screen column | Planner | Complete |
 | I01 | CSS and checks | Lead implementer | Complete |
 | T01 | Independent layout verification | Independent tester | Complete |
-| R01 | Verdict and delivery | Independent reviewer | Pending |
+| R01 | Verdict and delivery | Independent reviewer | Complete |

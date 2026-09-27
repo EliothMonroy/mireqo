@@ -8,4 +8,7 @@ The website brief still says to cap content near 1120px and screenshots near 300
 
 ## Delivery
 
-Pending commit, push, and PR.
+- Commit: `81a8654`
+- PR: https://github.com/EliothMonroy/mireqo/pull/10
+- Feature branch `codex/website-wide-layout` is preserved while the PR is open.
+- Worktree `/Users/eliothmonroy/Documents/Github/mireqo/.worktrees/website-wide-layout` retained for the open PR.
