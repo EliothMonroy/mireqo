@@ -289,16 +289,25 @@ h1 {
 }
 
 @media (min-width: 1200px) {
+  .wrap {
+    width: min(100% - 2 * var(--space), 1800px);
+    max-width: 1800px;
+  }
+
   .intro {
     display: grid;
-    grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
-    column-gap: 2.5rem;
+    grid-template-columns: minmax(18rem, 24rem) minmax(0, 1fr);
+    column-gap: clamp(2rem, 3vw, 3.5rem);
     align-items: start;
-    padding-block: 1.5rem 2.5rem;
+    padding-block: 1.75rem 2.75rem;
   }
 
   .hero {
     padding-block: 0.15rem 0.5rem;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 3.2vw, 4rem);
   }
 
   .features {
@@ -306,15 +315,16 @@ h1 {
   }
 
   .features h2 {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .preview-strip {
-    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 26rem));
+    gap: clamp(1rem, 1.5vw, 1.75rem);
   }
 
   .disclosure {
-    margin-top: 0.85rem;
+    margin-top: 1rem;
   }
 }
 
