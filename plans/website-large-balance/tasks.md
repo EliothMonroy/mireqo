@@ -9,4 +9,4 @@
 | P01 | Plan the large-screen balance | Planner | Complete |
 | I01 | HTML, CSS, and checks | Lead implementer | Complete |
 | T01 | Independent layout verification | Independent tester | Complete |
-| R01 | Verdict and delivery | Independent reviewer | Pending |
+| R01 | Verdict and delivery | Independent reviewer | Complete |
