@@ -195,12 +195,15 @@ test('styles are mobile-first with a contained screenshot strip and a wide-layou
   const css = read(cssPath);
   const html = collapsed(read(htmlPath));
   assert.match(html, /class="intro wrap"/);
+  assert.match(html, /class="hero-copy"/);
+  assert.match(html, /class="hero-aside"/);
   assert.match(css, /scroll-snap-type:\s*x\s+mandatory/);
   assert.match(css, /@media \(min-width:\s*768px\)/);
   assert.match(css, /@media \(min-width:\s*1200px\)/);
   assert.match(css, /max-width:\s*1120px/);
-  assert.match(css, /max-width:\s*1800px/);
-  assert.match(css, /minmax\(0,\s*26rem\)/);
+  assert.match(css, /max-width:\s*78rem/);
+  assert.match(css, /min\(100%,\s*24rem\)/);
+  assert.match(css, /100dvh/);
   assert.match(css, /\.preview-strip[\s\S]{0,200}justify-content:\s*start/);
   assert.match(css, /#F7F3EB/i);
   assert.match(css, /#93442C/i);

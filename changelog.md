@@ -1,3 +1,4 @@
+2026-09-30 — Center the large-screen product page so the headline and screenshots form one balanced column and the header spans the window.
 2026-09-26 — Widen the product page on large screens so the intro and screenshots grow past the 1120px cap instead of sitting as a small centered block.
 2026-09-19 — Compose the product website intro on large screens so hero copy sits beside start-aligned screenshot previews instead of leaving empty space and stretched card gaps.
 2026-09-19 — Publish only apps/website/public to GitHub Pages after website page tests, instead of uploading the repository root.
