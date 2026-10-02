@@ -12,3 +12,4 @@ coverage/
 .bundle/
 vendor/bundle/
 *.log
+.wakatime-project
